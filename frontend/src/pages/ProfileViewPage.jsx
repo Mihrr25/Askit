@@ -35,9 +35,9 @@ const profileViewPage = (props) => {
           </button>
           {id == props.user.givenId && <div className="text-white text-md font-semibold mr-2 flex gap-1 cursor-pointer" onClick={() => navigate('/profile/edit')}>
             <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path fill-rule="evenodd" clip-rule="evenodd" d="M4.0156 12.6767L12.7068 3.98549C13.5944 3.09793 15.0341 3.09793 15.9217 3.98549L17.0825 5.14636C17.9701 6.03392 17.9701 7.47366 17.0825 8.36121L8.35704 17.0867C7.96885 17.4749 7.44262 17.6926 6.89322 17.6926H3.31982L3.40969 14.0877C3.42359 13.5578 3.64038 13.0519 4.0156 12.6767Z" stroke="white" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" />
-              <path d="M11.623 5.08691L15.9784 9.44133" stroke="white" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" />
-              <path d="M12.1206 17.6927H18.2826" stroke="white" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" />
+              <path fillRule="evenodd" clipRule="evenodd" d="M4.0156 12.6767L12.7068 3.98549C13.5944 3.09793 15.0341 3.09793 15.9217 3.98549L17.0825 5.14636C17.9701 6.03392 17.9701 7.47366 17.0825 8.36121L8.35704 17.0867C7.96885 17.4749 7.44262 17.6926 6.89322 17.6926H3.31982L3.40969 14.0877C3.42359 13.5578 3.64038 13.0519 4.0156 12.6767Z" stroke="white" strokeWidth="1.35" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M11.623 5.08691L15.9784 9.44133" stroke="white" strokeWidth="1.35" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M12.1206 17.6927H18.2826" stroke="white" strokeWidth="1.35" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
 
             Edit Profile</div>}

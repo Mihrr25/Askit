@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate} from 'react-router-dom';
-import arrowback from '../assets/arrowback.svg';
+// import arrowback from '../assets/arrowback.svg';
 
 function GettingStarted() {
   const [page, setPage] = useState(0);
