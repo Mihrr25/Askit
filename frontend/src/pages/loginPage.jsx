@@ -1,7 +1,7 @@
 import React, { useState,useEffect } from 'react';
 import{useDispatch } from 'react-redux';
 import { useNavigate} from 'react-router-dom';
-import arrowback from '../assets/arrowback.svg';
+// import arrowback from '../assets/arrowback.svg';
 import {login} from "../actions/authActions"
 import {connect} from "react-redux"
 
