@@ -48,7 +48,7 @@ const Sidebar = ({ toggleSidebar, isOpen,...props }) => {
             </li>
             <div className="h-0.25 w-full bg-[#77777733]"></div>
 
-            <li className="mb-2">
+            {/* <li className="mb-2">
               <a href="#" className={`flex items-center py-2 px-2 hover:bg-gray-900 rounded`}>
                 <span className="mr-3"><HelpCircle size={18}/></span>
                 <span>How it works</span>
@@ -63,7 +63,7 @@ const Sidebar = ({ toggleSidebar, isOpen,...props }) => {
                 <span>Support</span>
               </a>
             </li>
-            <div className="h-0.25 w-full bg-[#77777733]"></div>
+            <div className="h-0.25 w-full bg-[#77777733]"></div> */}
 
             <li className="mb-2" onClick={(e)=>{e.preventDefault();navigate("/mytasks")}}>
               <a href="#" className={`flex items-center py-2 px-2 hover:bg-gray-900 rounded `}>
