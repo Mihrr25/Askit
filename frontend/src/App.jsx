@@ -54,17 +54,18 @@ function App(props) {
             <Route path="/signup" element={props.user ? <Navigate to="/" /> : <SignupPage />} />
             <Route path="/gettingStarted" element={props.user ? <><Navigate to="/" /></> : <GettingStarted />} />
             <Route path="/" element={props.isAuthenticated ? <Outlet /> : <Navigate to="/gettingStarted" />}>
-              <Route path="/messages" element={<MessagesPage />} />
-              <Route path="/messages/:id" element={<UserMessagePage />} />
-              <Route path="/post" element={<PostTaskPage />} />
-              <Route path="/mytasks" element={<MyTasksPage/>} />
               <Route path="/" element={<HomePage />} />
               <Route path="/task/:id" element={<TaskPage />} />
-              <Route path="/task/offer/:id" element={<MakeOffer />} />
-              <Route path="/task/offers/:id" element={<Offers />} />
+              <Route path="/messages" element={<MessagesPage />} />
+              <Route path="/messages/:id" element={<UserMessagePage />} />
               <Route path="/alerts" element={<AlertsPage />} />
-              <Route path="/profile/edit" element={<EditProfile />} />
               <Route path="/profile/:id" element={<ProfileViewPage />} />
+              <Route path="/profile/edit" element={<EditProfile />} />
+
+              <Route path="/post" element={props.user.isProfileSetUp?<PostTaskPage /> : <Navigate to="/profile/edit"/>} />
+              <Route path="/mytasks" element={props.user.isProfileSetUp?<MyTasksPage/> : <Navigate to="/profile/edit"/>} />
+              <Route path="/task/offer/:id" element={props.user.isProfileSetUp?<MakeOffer /> : <Navigate to="/profile/edit"/>} />
+              <Route path="/task/offers/:id" element={props.user.isProfileSetUp?<Offers /> : <Navigate to="/profile/edit"/>} />
             </Route>
           </Routes>
         </BrowserRouter>
