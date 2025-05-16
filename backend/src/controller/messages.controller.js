@@ -1,0 +1,317 @@
+import Message from "../models/messages.model.js";
+import UserChats from "../models/userChats.model.js";
+import User from "../models/users.model.js";
+import { io, userSocketMap } from "../lib/socket.js"
+import exp from "constants";
+import Alerts from "../models/alerts.model.js";
+
+export const getChats = async (req, res) => {
+    try {
+        let obj = {};
+        const chats = await UserChats.findOne({ userChats: req.user.givenId })
+        if (chats) obj = { ...obj, chats, };
+        else {
+            const newUserChat = new UserChats({
+                userChats: req.user.givenId,
+                chats: {}
+            })
+            await newUserChat.save()
+            obj = { ...obj, chats: newUserChat };
+        }
+        for (const key in obj.chats.chats) {
+            const chat = obj.chats.chats[key];
+            const user = await User.findOne({ givenId: key });
+            if (user) {
+                obj.chats.chats[key].userDetails = {
+                    firstName: user.firstName,
+                    lastName: user.lastName,
+                    givenId: user.givenId,
+                    profilePic: user.profilePic,
+                };
+            }
+            let message = await Message.findById(chat.messageId).select("message createdAt")
+            if (message) {
+                obj.chats.chats[key].message = message.message;
+                obj.chats.chats[key].createdAt = message.createdAt;
+            }
+            else {
+                obj.chats.chats[key].message = "";
+                obj.chats.chats[key].createdAt = new Date();
+            }
+        }
+        // console.log("chats",obj.chats.chats)
+        res.status(200).json(obj.chats.chats);
+    } catch (error) {
+        console.log("Error getting chats", error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+}
+
+export const getMessages = async (req, res) => {
+    const { friendId } = req.params;
+    const user = await User.findOne({ givenId: friendId })
+    if (!user) {
+        return res.status(400).json({ message: "Invalid User" }).select("-password")
+    }
+    try {
+        const messages = await Message.find({
+            $or: [{ senderId: req.user.givenId, receiverId: friendId }, { receiverId: req.user.givenId, senderId: friendId }]
+        }).sort({ createdAt: 1 });
+        const obj = {
+            messages,
+            userDetails: {
+                firstName: user.firstName,
+                lastName: user.lastName,
+                givenId: user.givenId,
+                profilePic: user.profilePic,
+            }
+
+        }
+        const senderChat = await UserChats.findOne({ userChats: req.user.givenId })
+        const existingData = senderChat.chats[friendId.toString()] || {};
+
+        senderChat.set(`chats.${friendId.toString()}`, {
+            ...existingData,
+            unreadMessages: 0,
+        });
+
+        await senderChat.save();
+
+        let obj1 = { chats: senderChat.chats, };
+        for (const key in obj1.chats) {
+            // console.log("hello")
+            const chat = obj1.chats[key];
+            const user = await User.findOne({ givenId: key });
+            if (user) {
+                obj1.chats[key].userDetails = {
+                    firstName: user.firstName,
+                    lastName: user.lastName,
+                    givenId: user.givenId,
+                    profilePic: user.profilePic,
+                };
+            }
+            let message = await Message.findById(chat.messageId).select("message createdAt")
+            if (message) {
+                obj1.chats[key].message = message.message;
+                obj1.chats[key].createdAt = message.createdAt;
+            }
+            else {
+                obj1.chats[key].message = "";
+                obj1.chats[key].createdAt = new Date();
+            }
+        }
+
+        io.to(userSocketMap[req.user.givenId]).emit("updatedChat", obj1.chats);
+
+
+        res.status(200).json(obj);
+    } catch (error) {
+        console.log("Error getting messages", error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+}
+
+export const sendMessage = async (req, res) => {
+    const { id } = req.params;
+    const { message } = req.body;
+    // console.log("message",req.body)
+    const friendId = id;
+    // console.log("friendId",friendId)
+    try {
+        const newMessage = new Message({
+            senderId: req.user.givenId,
+            receiverId: friendId,
+            message,
+        });
+        await newMessage.save();
+        console.log("newMessage", newMessage)
+        //sender
+        let senderChat = await UserChats.findOne({ userChats: req.user.givenId })
+        if (!senderChat) {
+            // console.log(1)
+            senderChat = new UserChats({
+                userChats: req.user.givenId,
+                chats: {}
+            })
+            await senderChat.save()
+
+        }
+
+        if (!senderChat.chats) {
+
+            senderChat.chats = {}
+        }
+        // let senderChat=await UserChats.findOne({userChats:req.user.givenId})
+        if (!senderChat.chats[friendId]) {
+            senderChat.chats[friendId] = {
+                messageId: newMessage._id,
+                unreadMessages: 0,
+                time: newMessage.createdAt,
+            }
+        }
+        else {
+            senderChat.set(`chats.${friendId}`, {
+                unreadMessages: 0,
+                messageId: newMessage._id,
+                time: newMessage.createdAt,
+            });
+        }
+        //receiver
+        let receiverChat = await UserChats.findOne({ userChats: friendId })
+        if (!receiverChat) {
+            receiverChat = new UserChats({
+                userChats: friendId,
+                chats: {}
+            })
+            await receiverChat.save()
+        }
+        if (!receiverChat.chats) {
+            receiverChat.chats = {}
+        }
+        if (!receiverChat.chats[req.user.givenId]) {
+            receiverChat.chats[req.user.givenId] = {
+                messageId: newMessage._id,
+                unreadMessages: 1,
+                time: newMessage.createdAt,
+            }
+        }
+        else {
+            receiverChat.set(`chats.${req.user.givenId}`, {
+                unreadMessages: receiverChat.chats[req.user.givenId].unreadMessages + 1,
+                messageId: newMessage._id,
+                time: newMessage.createdAt,
+            });
+        }
+        await senderChat.save();
+        await receiverChat.save();
+        console.log("senderChat", senderChat)
+        let obj1 = { chats: senderChat.chats, };
+        for (const key in obj1.chats) {
+            // console.log("hello")
+            const chat = obj1.chats[key];
+            const user = await User.findOne({ givenId: key });
+            if (user) {
+                obj1.chats[key].userDetails = {
+                    firstName: user.firstName,
+                    lastName: user.lastName,
+                    givenId: user.givenId,
+                    profilePic: user.profilePic,
+                };
+            }
+            let message = await Message.findById(chat.messageId).select("message createdAt")
+            if (message) {
+                obj1.chats[key].message = message.message;
+                obj1.chats[key].createdAt = message.createdAt;
+            }
+            else {
+                obj1.chats[key].message = "";
+                obj1.chats[key].createdAt = new Date();
+            }
+        }
+        let obj2 = { chats: receiverChat.chats, };
+        for (const key in obj2.chats) {
+            const chat = obj2.chats[key];
+            const user = await User.findOne({ givenId: key });
+            if (user) {
+                obj2.chats[key].userDetails = {
+                    firstName: user.firstName,
+                    lastName: user.lastName,
+                    givenId: user.givenId,
+                    profilePic: user.profilePic,
+                };
+            }
+            let message = await Message.findById(chat.messageId).select("message createdAt")
+            if (message) {
+                obj2.chats[key].message = message.message;
+                obj2.chats[key].createdAt = message.createdAt;
+            }
+            else {
+                obj2.chats[key].message = "";
+                obj2.chats[key].createdAt = new Date();
+            }
+        }
+
+        io.to(userSocketMap[friendId]).emit("newMessage", newMessage);
+        io.to(userSocketMap[friendId]).emit("updatedChat", obj2.chats);
+        io.to(userSocketMap[req.user.givenId]).emit("updatedChat", obj1.chats);
+        // console.log(obj1)
+
+        //emit to sender
+        res.status(201).json(newMessage);
+        // console.log("senderChat",senderChat)
+        let myData = await UserChats.findOne({ userChats: req.user.givenId });
+        console.log("myData", myData);
+
+    } catch (error) {
+        console.log("Error sending message", error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+}
+
+export const updateMessages = async (req, res) => {
+    const { friendId } = req.params;
+    try {
+        const userChat = await UserChats.findOne({ userChats: req.user.givenId });
+        if (!userChat) {
+            return res.status(404).json({ message: "User chat not found" });
+        }
+        // console.log("hello",userChat)
+        // console.log("friendId",friendId,String(friendId))
+
+        const chat = userChat.chats[String(friendId)];
+        if (!chat) {
+            return res.status(404).json({ message: "Chat not found" });
+        }
+
+        const existingData = userChat.chats[friendId.toString()] || {};
+
+        userChat.set(`chats.${friendId.toString()}`, {
+            ...existingData,
+            unreadMessages: 0,
+        });
+
+        await userChat.save();
+
+
+        let obj1 = { chats: userChat.chats, };
+        for (const key in obj1.chats) {
+            // console.log("hello")
+            const chat = obj1.chats[key];
+            const user = await User.findOne({ givenId: key });
+            if (user) {
+                obj1.chats[key].userDetails = {
+                    firstName: user.firstName,
+                    lastName: user.lastName,
+                    givenId: user.givenId,
+                    profilePic: user.profilePic,
+                };
+            }
+            let message = await Message.findById(chat.messageId).select("message createdAt")
+            if (message) {
+                obj1.chats[key].message = message.message;
+                obj1.chats[key].createdAt = message.createdAt;
+            }
+            else {
+                obj1.chats[key].message = "";
+                obj1.chats[key].createdAt = new Date();
+            }
+        }
+
+        io.to(userSocketMap[req.user.givenId]).emit("updatedChat", obj1.chats);
+        res.status(200).json({ message: "Done" });
+        console.log("done")
+    } catch (error) {
+        console.log("Error getting messages", error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+}
+
+export const getAlerts=async (req, res) => {
+    try {
+        const alerts = await Alerts.find({ user: req.user.givenId }).sort({ createdAt: -1 });
+        res.status(200).json(alerts);
+    } catch (error) {
+        console.log("Error getting alerts", error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+}
