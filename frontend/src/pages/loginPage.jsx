@@ -5,8 +5,8 @@ import { useNavigate} from 'react-router-dom';
 import {login} from "../actions/authActions"
 import {connect} from "react-redux"
 
-function LoginPage(props) {
-  const [showPassword, setShowPassword] = useState(false);
+function LoginPage() {
+  // const [showPassword, setShowPassword] = useState(false);
   const dispatch=useDispatch();
   const navigate = useNavigate();
   
@@ -35,7 +35,7 @@ function LoginPage(props) {
             <g id="Iconly/Light/Arrow - Left 4">
             <g id="Iconly/Light/Arrow - Left 4_2">
             <g id="Arrow - Left 2">
-            <path id="Stroke 1" d="M8.5 15L1.5 8L8.5 1" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path id="Stroke 1" d="M8.5 15L1.5 8L8.5 1" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
             </g>
             </g>
             </g>
