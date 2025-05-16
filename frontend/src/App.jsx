@@ -62,10 +62,10 @@ function App(props) {
               <Route path="/profile/:id" element={<ProfileViewPage />} />
               <Route path="/profile/edit" element={<EditProfile />} />
 
-              <Route path="/post" element={props.user.isProfileSetUp?<PostTaskPage /> : <Navigate to="/profile/edit"/>} />
-              <Route path="/mytasks" element={props.user.isProfileSetUp?<MyTasksPage/> : <Navigate to="/profile/edit"/>} />
-              <Route path="/task/offer/:id" element={props.user.isProfileSetUp?<MakeOffer /> : <Navigate to="/profile/edit"/>} />
-              <Route path="/task/offers/:id" element={props.user.isProfileSetUp?<Offers /> : <Navigate to="/profile/edit"/>} />
+              <Route path="/post" element={props.user?.isProfileSetUp?<PostTaskPage /> : <Navigate to="/profile/edit"/>} />
+              <Route path="/mytasks" element={props.user?.isProfileSetUp?<MyTasksPage/> : <Navigate to="/profile/edit"/>} />
+              <Route path="/task/offer/:id" element={props.user?.isProfileSetUp?<MakeOffer /> : <Navigate to="/profile/edit"/>} />
+              <Route path="/task/offers/:id" element={props.user?.isProfileSetUp?<Offers /> : <Navigate to="/profile/edit"/>} />
             </Route>
           </Routes>
         </BrowserRouter>
