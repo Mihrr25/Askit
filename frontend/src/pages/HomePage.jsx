@@ -54,9 +54,9 @@ const HomePage = (props) => {
     setTasks(props.tasks)
   }
   , [props.tasks])
-  if(props.loading){
-    return <div>Loading...</div>
-  }
+  // if(props.loading){
+  //   return <div>Loading...</div>
+  // }
 
   
 
@@ -77,9 +77,9 @@ const HomePage = (props) => {
         {tasks.length} items found
       </div>
       <div className="flex flex-col w-full mt-3">
-        {tasks.map((task) => (
+        {tasks?tasks.map((task) => (
           <TaskDesc task={task} key={task._id} />
-        ))}
+        )):""}
       </div>
 
 
