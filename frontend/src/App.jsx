@@ -13,7 +13,7 @@ import MakeOffer from './pages/makeOffer';
 import Offers from './pages/offers';
 import MyTasksPage from './pages/MyTasksPage';
 import { getUser } from './actions/authActions';
-import UserMessagePage from './pages/userMessagePage';
+import UserMessagePage from './pages/UserMessagePage';
 import {connectSocket} from './actions/socketActions'
 import {fetchChats} from './actions/messagesActions'
 import { fetchAlerts } from './actions/alertsAction';
