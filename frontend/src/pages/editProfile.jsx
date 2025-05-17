@@ -171,7 +171,7 @@ const EditProfile = (props) => {
           </div>
           <div className="ques flex flex-col mb-2">
             <div className="flex items-center mt-2 pl-1 mb-1.5 flex-wrap">
-              <div className="text-lg">Skills</div>
+              <div className="text-lg">About Me</div>
             </div>
             <div className="mb-2">
               <textarea
