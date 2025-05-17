@@ -40,7 +40,9 @@ function App(props) {
     , [props.isAuthenticated]);
 
   if(props.loading){
-    return <div>Loading...</div>
+    return <div className="fixed inset-0 bg-black bg-opacity-30 z-50 flex items-center justify-center">
+      <div className="w-6 h-6 rounded-full bg-white opacity-60 animate-bounce" />
+    </div>
   }
 
 
