@@ -55,13 +55,13 @@ function App(props) {
             <Route path="/gettingStarted" element={props.user ? <><Navigate to="/" /></> : <GettingStarted />} />
             <Route path="/" element={props.isAuthenticated ? <Outlet /> : <Navigate to="/gettingStarted" />}>
               <Route path="/" element={<HomePage />} />
-              <Route path="/task/:id" element={<TaskPage />} />
               <Route path="/messages" element={<MessagesPage />} />
               <Route path="/messages/:id" element={<UserMessagePage />} />
               <Route path="/alerts" element={<AlertsPage />} />
               <Route path="/profile/:id" element={<ProfileViewPage />} />
               <Route path="/profile/edit" element={<EditProfile />} />
 
+              <Route path="/task/:id" element={props.user?.isProfileSetUp?<TaskPage /> : <Navigate to="/profile/edit"/>} />
               <Route path="/post" element={props.user?.isProfileSetUp?<PostTaskPage /> : <Navigate to="/profile/edit"/>} />
               <Route path="/mytasks" element={props.user?.isProfileSetUp?<MyTasksPage/> : <Navigate to="/profile/edit"/>} />
               <Route path="/task/offer/:id" element={props.user?.isProfileSetUp?<MakeOffer /> : <Navigate to="/profile/edit"/>} />
