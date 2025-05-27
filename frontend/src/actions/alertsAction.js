@@ -28,7 +28,7 @@ export const fetchAlerts = () => async (dispatch, getState) => {
     try {
         dispatch(fetchAlertRequest())
         const { data } = await axiosInstance.get('/messages/getAlerts')
-        dispatch(fetchAlertSuccess(data))
+        if(data)dispatch(fetchAlertSuccess(data))
     } catch (error) {
         dispatch(fetchAlertFailure(error.response?.data?.message))
         toast.error("Internal Server Issue")
