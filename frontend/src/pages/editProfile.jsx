@@ -156,7 +156,7 @@ const EditProfile = (props) => {
             <div className="mb-2">
               <input
                 type="text"
-                placeholder="Enter Skills (e.g., React, Tailwind, Node.js)"
+                placeholder="Enter Skills (e.g., Photography, Video Editing, etc.)"
                 value={profile.skills}
                 onChange={(e) => setProfile({ ...profile, skills: e.target.value })}
                 required
