@@ -231,7 +231,7 @@ function TaskPage(props) {
                         <div className="flex">
 
                             <div className="w-10 h-10 rounded-full bg-pink-300"></div>
-                            <div className="flex flex-col max-w-25 ml-3 justify-center">
+                            <div className="flex flex-col max-w-30 ml-3 justify-center">
                                 <div className="text-sm font-semibold text-[#569aff]">{`${props.task.postedBy.firstName} ${props.task.postedBy.lastName ? props.task.postedBy.lastName : ""} `}</div>
                                 <div className="text-[#a1a1a1] text-[0.75rem]">{timeAgo(new Date(props.task.task.createdAt))}</div>
                             </div>
