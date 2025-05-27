@@ -24,7 +24,7 @@ export default function(state = initialState, action){
             return {
                 ...state,
                 loading: false,
-                alerts: payload[0].alerts,
+                alerts: payload[0]?.alerts,
                 success: true,
             };
         case GET_ALERT_FAILURE:
