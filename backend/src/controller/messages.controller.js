@@ -74,10 +74,14 @@ export const getMessages = async (req, res) => {
                 ...senderChat.chats[friendId.toString()],
                 unreadMessages: 0,
             });
+            console.log("senderChat",senderChat)
             await senderChat.save();
         }
-        // const existingData = senderChat.chats[friendId.toString()] || {};
-        else sb=true;
+        else{
+            senderChat.chats={};
+            await senderChat.save();
+            sb=true;
+        }
 
 
         let obj1 = { chats: senderChat.chats, };
@@ -102,7 +106,7 @@ export const getMessages = async (req, res) => {
                     profilePic: user.profilePic,
                 };
             }
-            let message = await Message.findById(chat.messageId).select("message createdAt")
+            if(chat.messageId){let message = await Message.findById(chat.messageId).select("message createdAt")
             if (message) {
                 obj1.chats[key].message = message.message;
                 obj1.chats[key].createdAt = message.createdAt;
@@ -110,6 +114,12 @@ export const getMessages = async (req, res) => {
             else {
                 obj1.chats[key].message = "";
                 obj1.chats[key].createdAt = new Date();
+            }}
+            else{
+                
+                obj1.chats[key].message = "";
+                obj1.chats[key].createdAt = new Date();
+            
             }
         }
 
@@ -119,7 +129,7 @@ export const getMessages = async (req, res) => {
         res.status(201).json(obj);
     } catch (error) {
         console.log("Error getting messages", error);
-        res.status(500).json({ message: "Internal Server Error",error: error.message,updated:"Now41" });
+        res.status(500).json({ message: "Internal Server Error"});
     }
 }
 
