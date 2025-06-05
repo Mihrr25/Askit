@@ -68,16 +68,25 @@ export const getMessages = async (req, res) => {
 
         }
         const senderChat = await UserChats.findOne({ userChats: req.user.givenId })
-        const existingData = senderChat.chats[friendId.toString()] || {};
+        let sb=false;
+        if(senderChat.chats[friendId.toString()]){
+            senderChat.set(`chats.${friendId.toString()}`, {
+                ...senderChat.chats[friendId.toString()],
+                unreadMessages: 0,
+            });
+            await senderChat.save();
+        }
+        // const existingData = senderChat.chats[friendId.toString()] || {};
+        else sb=true;
 
-        senderChat.set(`chats.${friendId.toString()}`, {
-            ...existingData,
-            unreadMessages: 0,
-        });
-
-        await senderChat.save();
 
         let obj1 = { chats: senderChat.chats, };
+        if(sb){
+            obj1.chats[friendId] = {
+                messageId: "",
+                unreadMessages: 0,
+                time: new Date(),
+            }}
         for (const key in obj1.chats) {
             // console.log("hello")
             const chat = obj1.chats[key];
@@ -107,7 +116,7 @@ export const getMessages = async (req, res) => {
         res.status(200).json(obj);
     } catch (error) {
         console.log("Error getting messages", error);
-        res.status(500).json({ message: "Internal Server Error" });
+        res.status(500).json({ message: "Internal Server Error",error: error.message });
     }
 }
 
