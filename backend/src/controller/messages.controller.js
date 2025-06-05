@@ -78,8 +78,8 @@ export const getMessages = async (req, res) => {
             await senderChat.save();
         }
         else{
-            senderChat.chats={};
-            await senderChat.save();
+            // senderChat.chats={};
+            // await senderChat.save();
             sb=true;
         }
 
@@ -149,6 +149,7 @@ export const sendMessage = async (req, res) => {
         console.log("newMessage", newMessage)
         //sender
         let senderChat = await UserChats.findOne({ userChats: req.user.givenId })
+        console.log("senderChat", senderChat)   
         if (!senderChat) {
             // console.log(1)
             senderChat = new UserChats({

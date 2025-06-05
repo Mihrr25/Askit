@@ -5,12 +5,18 @@ import cookie from "cookie"
 import jwt from "jsonwebtoken"
 import  User from "../models/users.model.js"
 import dotenv from "dotenv"
-
+dotenv.config()
 const app = express()
 const server = http.createServer(app)
+// const io = new Server(server, {
+//     cors: {
+//         origin: [process.env.BASE_URL],
+//         credentials: true
+//     },
+// })
 const io = new Server(server, {
     cors: {
-        origin: [process.env.BASE_URL],
+        origin: process.env.BASE_URL,
         credentials: true
     },
 })
