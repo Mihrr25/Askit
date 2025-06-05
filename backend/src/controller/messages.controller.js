@@ -68,16 +68,16 @@ export const getMessages = async (req, res) => {
 
         }
         const senderChat = await UserChats.findOne({ userChats: req.user.givenId })
-        let sb=false;
-        if(senderChat.chats[friendId.toString()]){
-            senderChat.set(`chats.${friendId.toString()}`, {
-                ...senderChat.chats[friendId.toString()],
-                unreadMessages: 0,
-            });
-            await senderChat.save();
-        }
-        // const existingData = senderChat.chats[friendId.toString()] || {};
-        else sb=true;
+        // let sb=false;
+        // if(senderChat.chats[friendId.toString()]){
+        //     senderChat.set(`chats.${friendId.toString()}`, {
+        //         ...senderChat.chats[friendId.toString()],
+        //         unreadMessages: 0,
+        //     });
+        //     await senderChat.save();
+        // }
+        // // const existingData = senderChat.chats[friendId.toString()] || {};
+        // else sb=true;
 
 
         // let obj1 = { chats: senderChat.chats, };
@@ -110,7 +110,7 @@ export const getMessages = async (req, res) => {
         //     }
         // }
 
-        io.to(userSocketMap[req.user.givenId]).emit("updatedChat", obj1.chats);
+        // io.to(userSocketMap[req.user.givenId]).emit("updatedChat", obj1.chats);
 
 
         res.status(200).json(obj);
