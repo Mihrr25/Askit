@@ -51,7 +51,7 @@ export const getMessages = async (req, res) => {
     const { friendId } = req.params;
     const user = await User.findOne({ givenId: friendId })
     if (!user) {
-        return res.status(400).json({ message: "Invalid User" }).select("-password")
+        return res.status(400).json({ message: "Invalid User" })
     }
     try {
         const messages = await Message.find({
@@ -82,7 +82,7 @@ export const getMessages = async (req, res) => {
 
         let obj1 = { chats: senderChat.chats, };
         if(sb){
-            obj1.chats[friendId] = {
+            obj1.chats[friendId.toString()] = {
                 messageId: "",
                 unreadMessages: 0,
                 time: new Date(),
@@ -116,7 +116,7 @@ export const getMessages = async (req, res) => {
         res.status(200).json(obj);
     } catch (error) {
         console.log("Error getting messages", error);
-        res.status(500).json({ message: "Internal Server Error",error: error.message });
+        res.status(500).json({ message: "Internal Server Error",error: error.message,updated:"Now" });
     }
 }
 
