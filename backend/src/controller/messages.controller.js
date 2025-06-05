@@ -81,6 +81,9 @@ export const getMessages = async (req, res) => {
 
 
         let obj1 = { chats: senderChat.chats, };
+        if(!obj1.chats){
+            obj1.chats = {};
+        }
         if(sb){
             obj1.chats[friendId.toString()] = {
                 messageId: "",
