@@ -22,6 +22,7 @@ const taskSchema = new mongoose.Schema({
     OfferIdAccepted: { type: mongoose.Schema.Types.ObjectId, ref: "Offer" },
     UserAcceptedOffer: { type: Number, ref:User },
     completedDate: { type: Date },
+    taskCompletedBy: { type: [Number], default: [] },
     offers:{type: Number,default:0},
 }, { timestamps: true });
 

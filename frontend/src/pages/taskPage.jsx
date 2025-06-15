@@ -85,7 +85,7 @@ function TaskPage(props) {
 
     const handleFeedback = (e) => {
         e.preventDefault();
-        if (feedback.rating == 0) {
+        if (props.task.task.TaskPosterId==props.user.givenId &&feedback.rating == 0) {
             setError(true);
             return;
         }
@@ -126,6 +126,7 @@ function TaskPage(props) {
 
             ? <>
             <div className="feedback flex flex-col w-full h-full px-4">
+                    {props.task.task.TaskPosterId == props.user.givenId ?
                     <form className="flex flex-col w-full h-full mt-3" onSubmit={(e) => { handleFeedback(e) }}>
                         <div className="ques flex flex-col">
                             <div className="flex items-baseline mt-2 mb-3 flex-wrap">
@@ -192,7 +193,26 @@ function TaskPage(props) {
                         </div>
 
 
+                    </form>:
+                    <>
+                    <form className="flex flex-col w-full h-full mt-3" onSubmit={(e) => { handleFeedback(e) }}>
+
+                        <div className="text-[#b0b0b0] mt-3">Please confirm that you have successfully completed the assigned task.<br/>
+                        By clicking "Mark as Completed", you acknowledge that all necessary steps have been taken, the task has been fulfilled to the best of your ability, and any required information or uploads (if applicable) have been provided.<br/>
+                        Once submitted, no further edits or changes can be made.</div>
+
+                        <div className="endbar mb-4 mt-auto flex-col items-center">
+                            <div className="flex justify-center mt-4 sm:mt-4 w-full">
+                                <button type="submit" className={` cursor-pointer bg-white text-black w-[95%] h-[2.75rem] font-bold py-1 px-4 rounded-md`} >
+                                    Mark as Completed
+                                </button>
+                            </div>
+                        </div>
+
+
                     </form>
+                    </>                    
+                    }
             </div></> 
 
             : <div className="mainbrief flex flex-col w-full h-full px-4">
@@ -304,17 +324,48 @@ function TaskPage(props) {
                     </>
                 }
                 {
-                    props.task.task.Status=="Completed"?<>
+                    props.task.task.Status=="Completed"
+                    ?<>
                     
                         <div className="text-sm text-[#ffffff] mt-auto mb-5 text-center">Completed on {formatDate(props.task.task.completedDate)}</div>
                     </>
                 
-                :props.task.task.TaskPosterId == props.user.givenId && props.task.task.OfferIdAccepted ?
+                    : props.task.task.OfferIdAccepted &&props.task.task.TaskPosterId == props.user.givenId
+                    ? 
                     <>
-                        <div className="mt-auto mb-6 flex w-full justify-evenly">
-                            <div className="flex h-10 w-10/12 mt-5 bg-white rounded-lg text-black font-bold justify-center cursor-pointer items-center" onClick={(e) => { e.preventDefault(); setToggle(true) }}>
-                                Mark as Completed
+                        <div className="mt-auto mb-6 flex w-full justify-evenly pt-2">
+                            <div className="flex h-10 w-5/12 bg-[#222225] rounded-lg border-2 font-semibold cursor-pointer border-[#777777] justify-center items-center" onClick={(e) => { e.preventDefault(); navigate(`/messages/${props.task.task.UserAcceptedOffer}`) }}>
+                                Send Message
                             </div>
+                            { props.task.task.taskCompletedBy?.includes(props.user.givenId)?
+                            <div className="flex h-10 w-5/12 bg-[#222225] rounded-lg border-2 font-semibold border-[#777777] justify-center items-center text-[#707070]" >
+                                Pending
+                            </div>
+                            :
+                            <div className="flex h-10 w-5/12 bg-white rounded-lg text-black font-bold justify-center cursor-pointer items-center" onClick={(e) => { e.preventDefault(); setToggle(true) }}>
+                                Mark Completed
+                            </div>
+                            
+                            }
+                        </div>
+                    </> :
+                    props.task.task.OfferIdAccepted &&props.task.task.UserAcceptedOffer == props.user.givenId
+                    ? 
+                    <>
+                        <div className="mt-auto mb-6 flex w-full justify-evenly pt-2">
+                            <div className="flex h-10 w-5/12 bg-[#222225] rounded-lg border-2 font-semibold cursor-pointer border-[#777777] justify-center items-center" onClick={(e) => { e.preventDefault(); navigate(`/messages/${props.task.task.TaskPosterId}`) }}>
+                                Send Message
+                            </div>
+                            { props.task.task.taskCompletedBy?.includes(props.user.givenId)?
+                            <div className="flex h-10 w-5/12 bg-[#222225] rounded-lg border-2 font-semibold border-[#777777] justify-center items-center text-[#707070]" >
+                                Pending
+                            </div>
+                            :
+                            <div className="flex h-10 w-5/12 bg-white rounded-lg text-black font-bold justify-center cursor-pointer items-center" onClick={(e) => { e.preventDefault(); setToggle(true) }}>
+                                Mark Completed
+                            </div>
+                            
+                            }
                         </div>
                     </> :
                     props.task.task.TaskPosterId == props.user.givenId ?
