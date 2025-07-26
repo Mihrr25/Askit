@@ -6,7 +6,7 @@ import { protectRoute } from "../middleware/auth.middleware.js"
 router.post("/post",protectRoute,postTask)
 router.get("/allTasks",protectRoute,getAllTask)
 router.get("/temp",temp)
-router.post("deleteTask/:id",protectRoute,deleteTask)
+router.post("/deleteTask/:id",protectRoute,deleteTask)
 router.get("/particularTask/:id",protectRoute,getTaskById)
 router.post("/completeTask/:id",protectRoute,completeTask)
 router.get("/myTasks",protectRoute,getMyTask)

@@ -51,7 +51,7 @@ function App(props) {
     <>
       <div className="h-screen w-screen flex justify-center items-center bg-black text-white max-md:p-2">
 
-        <BrowserRouter>
+        <BrowserRouter basename="/app">
           <Routes>
             <Route path="/login" element={props.user ? <Navigate to="/" /> :<GoogleOAuthProvider clientId={1325}><LoginPage /></GoogleOAuthProvider>} />
             <Route path="/signup" element={props.user ? <Navigate to="/" /> : <GoogleOAuthProvider clientId={1235}><SignupPage /></GoogleOAuthProvider >} />

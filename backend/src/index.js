@@ -33,11 +33,19 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Serve frontend build static files
-app.use(express.static(path.join(__dirname, "../../frontend/dist")));
+app.use("/app/", express.static(path.join(__dirname, "../../frontend/dist")));
 
-// For any unknown route, send index.html (supports React Router)
-app.get("*", (req, res) => {
+// Serve index.html for /app/* (React routing)
+app.get("/app/*", (req, res) => {
   res.sendFile(path.join(__dirname, "../../frontend/dist", "index.html"));
+});
+
+// Static files for DemoPage (landing, about, etc.)
+app.use("/", express.static(path.join(__dirname, "../../DemoPage/dist")));
+
+// Serve index.html for root and other DemoPage routes
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../../DemoPage/dist", "index.html"));
 });
 
 

@@ -76,7 +76,6 @@ export const getTaskById = async (req, res) => {
         }
         const taskPoster = task.TaskPosterId;
         let poster;
-
         if (taskPoster != req.user.givenId && task.Status != "Open" && task.UserAcceptedOffer != req.user.givenId) {
             return res.status(400).json({ message: "You are not authorized to view this task" });
         }
