@@ -53,8 +53,8 @@ function App(props) {
 
         <BrowserRouter>
           <Routes>
-            <Route path="/login" element={props.user ? <Navigate to="/" /> :<GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}><LoginPage /></GoogleOAuthProvider>} />
-            <Route path="/signup" element={props.user ? <Navigate to="/" /> : <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}><SignupPage /></GoogleOAuthProvider >} />
+            <Route path="/login" element={props.user ? <Navigate to="/" /> :<GoogleOAuthProvider clientId={1325}><LoginPage /></GoogleOAuthProvider>} />
+            <Route path="/signup" element={props.user ? <Navigate to="/" /> : <GoogleOAuthProvider clientId={1235}><SignupPage /></GoogleOAuthProvider >} />
             <Route path="/gettingStarted" element={props.user ? <><Navigate to="/" /></> : <GettingStarted />} />
             <Route path="/" element={props.isAuthenticated ? <Outlet /> : <Navigate to="/gettingStarted" />}>
               <Route path="/" element={<HomePage />} />
