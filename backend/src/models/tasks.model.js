@@ -24,6 +24,7 @@ const taskSchema = new mongoose.Schema({
     completedDate: { type: Date },
     taskCompletedBy: { type: [Number], default: [] },
     offers:{type: Number,default:0},
+    workDays: { type: Number, required: true }
 }, { timestamps: true });
 
 const Task = mongoose.model("Task", taskSchema);

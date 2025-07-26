@@ -11,12 +11,17 @@ const OfferComp = ({ offer,taskId }) => {
   ht=ht*100;
   ht=Math.ceil(ht);
   ht=ht/100;
+  let handleClick = (e) => { 
+    e.preventDefault();
+    // console.log("Offer clicked", offer);
+    navigate(`/profile/${offer.userGivenId}`)
+  }
   return (
     <>
       <div className="bg-[#222225] rounded-xl p-6 flex flex-col w-full">
         <div className="flex min-h-15 ">
-          <div className="bg-pink-300 h-full aspect-square rounded-full"></div>
-          <div className="flex flex-col justify-evenly ml-2 w-[60%] py-1">
+          <div className="bg-pink-300 h-full aspect-square rounded-full cursor-pointer flex items-center justify-center text-2xl" onClick={handleClick}>{offer.offeredByName.charAt(0)}</div>
+          <div className="flex flex-col justify-evenly ml-2 w-[60%] py-1 cursor-pointer" onClick={handleClick}>
             <div className="text-lg">{offer.offeredByName}</div>
             <div className="text-lg text-[#777777] line-clamp-1">{offer.offeredBySkills}</div>
           </div>

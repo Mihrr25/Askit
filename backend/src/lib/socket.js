@@ -14,18 +14,18 @@ const server = http.createServer(app)
 //         credentials: true
 //     },
 // })
-const io = new Server(server, {
-    cors: {
-        origin: process.env.BASE_URL,
-        credentials: true
-    },
-})
 // const io = new Server(server, {
 //     cors: {
-//         origin: "http://localhost:5173",
+//         origin: process.env.BASE_URL,
 //         credentials: true
 //     },
 // })
+const io = new Server(server, {
+    cors: {
+        origin: "http://localhost:5173",
+        credentials: true
+    },
+})
 
 const userSocketMap = {};
 

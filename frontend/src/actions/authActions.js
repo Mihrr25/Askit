@@ -90,6 +90,30 @@ export const login = (user) => async (dispatch) => {
 }
 }
 
+export const googleAuth = (code) => async (dispatch) => {
+    try {
+        dispatch(loginRequest());
+        const response = await axiosInstance.post("/auth/google-login", { code });
+        if (response.status === 201) {
+            dispatch(loginSuccess(response.data));
+            toast.success("Login Successful");
+        } else {
+            dispatch(loginFailure("No user found"));
+            console.log(response);
+            toast.error("Please try again");
+        }
+    } catch (error) {
+        console.log(error);
+        if (error.response?.data?.message) {
+            dispatch(loginFailure(error.response.data.message));
+            toast.error(error.response.data.message);
+        } else {
+            dispatch(loginFailure(error.message));
+            toast.error("Internal Server Error");
+        }
+    }
+}
+
 const signupRequest=()=>{
     return {
         type: SIGNUP_FAILURE

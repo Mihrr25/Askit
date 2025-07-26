@@ -25,6 +25,7 @@ export const postTask = async (req, res) => {
             timeSlot,
             timeFlexible,
             budget,
+            workDays,
         } = req.body;
         const newTask = new Task({
             categoryId,
@@ -43,6 +44,7 @@ export const postTask = async (req, res) => {
             budget: parseInt(budget, 10),
             TaskPosterId: req.user.givenId,
             givenId,
+            workDays: parseInt(workDays, 10),
         });
         const user = await User.findOne({ givenId: req.user.givenId });
         user.tasksPosted = (user.tasksPosted ? user.tasksPosted : 0) + 1;
@@ -69,6 +71,9 @@ export const getAllTask = async (req, res) => {
 export const getTaskById = async (req, res) => {
     try {
         const task = await Task.findOne({ givenId: req.params.id });
+        if (!task) {
+            return res.status(404).json({ message: "Task not found" });
+        }
         const taskPoster = task.TaskPosterId;
         let poster;
 
@@ -205,6 +210,26 @@ export const temp = async (req, res) => {
             await User.findByIdAndUpdate(user._id, { password: hashedPassword });
         }
         res.status(200).json(users);
+    } catch (error) {
+        console.log("error", error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+};
+
+export const deleteTask = async (req, res) => {
+    try {
+        const task = await Task.findOne({ givenId: req.params.id });
+        if (!task) {
+            return res.status(400).json({ message: "Task not found" });
+        }
+        if(!sameUser(req.user.givenId, task.TaskPosterId)) {
+            return res.status(400).json({ message: "You are not authorized to delete this task" });
+        }
+        if (task.Status !== "Open") {
+            return res.status(400).json({ message: "Task cannot be deleted as it is not open" });
+        }
+        await Task.deleteOne({ givenId: req.params.id });
+        res.status(200).json({ message: "Task deleted successfully" });
     } catch (error) {
         console.log("error", error);
         res.status(500).json({ message: "Internal Server Error" });

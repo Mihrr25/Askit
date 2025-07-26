@@ -5,6 +5,8 @@ import { getParticularTask,completeTask } from '../actions/TaskActions';
 import { useNavigate } from 'react-router-dom'
 import { StarFilled,EmptyStar } from '../assets/Icons';
 import { COMPLETE_TASK_RESET } from '../lib/types';
+import { axiosInstance } from '../lib/axios';
+import toast from 'react-hot-toast';
 
 
 function TaskPage(props) {
@@ -34,6 +36,21 @@ function TaskPage(props) {
             dispatch(getParticularTask(id));
         }
     }, [props.CompleteTaskSuccess]);
+
+    const [deleteTask, setDeleteTask] = useState(false);
+
+    const handleDelete = async (taskId) => {
+        try {
+            let res=await axiosInstance.delete(`/tasks/${taskId}`);
+            if(res.status===200){
+                navigate("/");
+                toast.success("Task deleted successfully");
+            }
+           
+        } catch (error) {
+            console.log("error", error);
+        }
+    }
 
     function timeAgo(date) {
         
@@ -101,6 +118,15 @@ function TaskPage(props) {
     return (
         <div className="h-full w-full max-w-[500px] bg-black text-white flex flex-col py-4 ">
             {/* Top Navigation Bar */}
+            {deleteTask && <div className="absolute inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+                <div className="bg-white text-black p-4 rounded">
+                    <p>Are you sure you want to delete this task?</p>
+                    <div className="flex justify-end mt-4">
+                        <button className="bg-red-500 text-white px-4 py-2 rounded" onClick={() => handleDelete(props.task.task.givenId)}>Delete</button>
+                        <button className="bg-gray-300 text-black px-4 py-2 rounded ml-2" onClick={() => setDeleteTask(false)}>Cancel</button>
+                    </div>
+                </div>
+            </div>}
             <div className={`topNavBar flex w-full justify-between items-center mt-4 px-4`}>
                 <div className="back-to-main-page flex pt-[0.2rem]">
                     <button style={{ all: 'unset', cursor: 'pointer' }} className="h-full" type="button" onClick={(e) => { if (toggle) { setToggle(false); } else navigate("/") }} >
@@ -250,9 +276,9 @@ function TaskPage(props) {
                     <div className="flex  justify-between mt-3">
                         <div className="flex">
 
-                            <div className="w-10 h-10 rounded-full bg-pink-300"></div>
+                            <div className="w-10 h-10 rounded-full bg-pink-300 flex justify-center cursor-pointer items-center text-xl" onClick={() => navigate(`/profile/${props.task.postedBy.givenId}`)}>{props.task.postedBy.firstName.charAt(0)}</div>
                             <div className="flex flex-col max-w-30 ml-3 justify-center">
-                                <div className="text-sm font-semibold text-[#569aff]">{`${props.task.postedBy.firstName} ${props.task.postedBy.lastName ? props.task.postedBy.lastName : ""} `}</div>
+                                <div className="text-sm font-semibold text-[#569aff] cursor-pointer"onClick={() => navigate(`/profile/${props.task.postedBy.givenId}`)}  >{`${props.task.postedBy.firstName} ${props.task.postedBy.lastName ? props.task.postedBy.lastName : ""} `}</div>
                                 <div className="text-[#a1a1a1] text-[0.75rem]">{timeAgo(new Date(props.task.task.createdAt))}</div>
                             </div>
                         </div>
@@ -289,8 +315,19 @@ function TaskPage(props) {
                 <div className="flex flex-col w-full mt-5">
                     <div className="text-[#a1a1a1] text-[0.8rem]">DESCRIPTION</div>
 
-                    <div className="text-sm mt-3 text-[#777777]">{props.task.task.description}</div>
+                    <div className="text-sm mt-1 text-[#777777]">{props.task.task.description}</div>
                 </div>
+                {props.task.task.specificRequirement && <div className="flex flex-col w-full mt-5">
+                    <div className="text-[#a1a1a1] text-[0.8rem]">SPECIFIC REQUIREMENTS</div>
+
+                    <div className="text-sm mt-1 text-[#777777]">{props.task.task.specificRequirement}</div>
+                </div>}
+                {props.task.task.workDays&&<div className="flex flex-col w-full mt-5">
+                    {props.task.task.categoryId==17?(<div className="text-[#a1a1a1] text-[0.8rem]">TOTAL BORROW DAYS</div>):(<div className="text-[#a1a1a1] text-[0.8rem]">TOTAL WORK DAYS</div>)}
+
+                    <div className="text-sm mt-1 text-[#777777]">{props.task.task.workDays} day{props.task.task.workDays && props.task.task.workDays > 1 ? "s" : ""}</div>
+                </div>}
+                
                 {(props.task.task.TaskPosterId == props.user.givenId || props.task.task.UserAcceptedOffer==props.user.givenId) && props.task.task.OfferIdAccepted &&
                     <>
                         <div className="w-full bg-[#2f2f2f] h-0.25 mt-4"></div>
@@ -302,9 +339,9 @@ function TaskPage(props) {
                             <div className="flex  justify-between mt-3">
                                 <div className="flex">
 
-                                    <div className="w-10 h-10 rounded-full bg-pink-300"></div>
+                                    <div className="w-10 h-10 rounded-full bg-pink-300 flex justify-center cursor-pointer items-center text-xl" onClick={() => navigate(`/profile/${props.task.offer.givenId}`)}>{props.task.offer.offeredBy.charAt(0)}</div>
                                     <div className="flex flex-col max-w-25 ml-3 justify-center">
-                                        <div className="text-sm font-semibold text-[#569aff]">{props.task.offer.offeredBy}</div>
+                                        <div className="text-sm font-semibold text-[#569aff] cursor-pointer" onClick={() => navigate(`/profile/${props.task.offer.givenId}`)}>{props.task.offer.offeredBy}</div>
                                         <div className="text-[#a1a1a1] text-[0.75rem]">{timeAgo(new Date(props.task.offer.offerAcceptedDate))}</div>
                                     </div>
                                 </div>
@@ -370,7 +407,10 @@ function TaskPage(props) {
                     </> :
                     props.task.task.TaskPosterId == props.user.givenId ?
                         <div className="mt-auto mb-6 flex w-full justify-evenly">
-                            <div className="flex h-10 w-10/12 bg-white rounded-lg text-black font-bold justify-center cursor-pointer items-center" onClick={() => { navigate(`/task/offers/${props.task.task.givenId}`) }}>
+                            <div className="flex h-10 w-5/12 bg-[#222225] rounded-lg border-2 font-semibold cursor-pointer border-[#777777] justify-center items-center" onClick={()=>{setDeleteTask(true)}}>
+                                Delete Task
+                            </div>
+                            <div className="flex h-10 w-5/12 bg-white rounded-lg text-black font-bold justify-center cursor-pointer items-center" onClick={() => { navigate(`/task/offers/${props.task.task.givenId}`) }}>
                                 View Offers
                             </div>
                         </div>

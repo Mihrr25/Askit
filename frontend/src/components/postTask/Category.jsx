@@ -1,6 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
-import { HomeworkAndAssignments,OfficeWork,Lift_Move_Pack,Tutoring,ComputerIT,Cleaning,VideoEditing,Photography,Design,DeliveryAndErrands,PetCare,GardeningAndPlantCare,Events,Custom,Socializing } from './categoryComponents';
+import { HomeworkAndAssignments,OfficeWork,Lift_Move_Pack,Tutoring,ComputerIT,Cleaning,VideoEditing,Photography,Design,DeliveryAndErrands,PetCare,GardeningAndPlantCare,Events,Custom,Socializing,FitnessAndHealth,BorrowingAndLending } from './categoryComponents';
 import DatePicker from '../datePicker.jsx';
 
 const Category = ({formData,setFormData,handleNext}) => {
@@ -16,16 +16,18 @@ const Category = ({formData,setFormData,handleNext}) => {
                     <Lift_Move_Pack formData={formData} setFormData={setFormData} id={3}/>
                     <Tutoring formData={formData} setFormData={setFormData} id={4}/>
                     <ComputerIT formData={formData} setFormData={setFormData} id={5}/>
-                    <Cleaning formData={formData} setFormData={setFormData} id={6}/>
+                    {/* <Cleaning formData={formData} setFormData={setFormData} id={6}/> */}
                     <VideoEditing formData={formData} setFormData={setFormData} id={7}/>
                     <Photography formData={formData} setFormData={setFormData} id={8}/>
                     <Design formData={formData} setFormData={setFormData} id={9}/>
                     <DeliveryAndErrands formData={formData} setFormData={setFormData} id={10}/>
                     <PetCare formData={formData} setFormData={setFormData} id={11}/>
-                    <GardeningAndPlantCare formData={formData} setFormData={setFormData} id={12}/>
+                    {/* <GardeningAndPlantCare formData={formData} setFormData={setFormData} id={12}/> */}
                     <Events formData={formData} setFormData={setFormData} id={13}/>
                     <Custom formData={formData} setFormData={setFormData} id={14}/>
-                    <Socializing formData={formData} setFormData={setFormData} id={15}/>
+                    <FitnessAndHealth formData={formData} setFormData={setFormData} id={16}/>
+                    <BorrowingAndLending formData={formData} setFormData={setFormData} id={17}/>
+                    {/* <Socializing formData={formData} setFormData={setFormData} id={15}/> */}
                 </div>
     
                 <div className="endbar mb-4 mt-auto flex-col items-center">

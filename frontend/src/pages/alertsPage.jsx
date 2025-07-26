@@ -56,8 +56,8 @@ const AlertsPage = (props) => {
 
       {props.alerts.loading && <div className="text-white text-3xl ml-5 font-semibold">Loading...</div>}
       <div className="w-full bg-black text-white rounded-lg">
-
-      {props.alerts?.alerts?.map((alert, index) => {
+        {props.alerts?.alerts?.length === 0 && <div className="text-[#88888888] text-md ml-5">No alerts found.</div>}
+      {props.alerts?.alerts?.slice().sort((a, b) => new Date(b.alertTime) - new Date(a.alertTime)).map((alert, index) => {
         return (
           <>
           <div className="flex w-full px-3 h-17 items-center gap-8 hover:bg-[#091010] cursor-pointer transition duration-150 ease-in " key={index} onClick={(e) => {e.preventDefault();navigate('/task/'+alert.taskId)}} >

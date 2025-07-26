@@ -2,6 +2,10 @@ import Message from "../models/messages.model.js";
 import UserChats from "../models/userChats.model.js";
 import User from "../models/users.model.js";
 import { io, userSocketMap } from "../lib/socket.js"
+import Offer from "../models/offers.model.js";
+import Reviews from "../models/review.model.js";
+import Tasks from "../models/tasks.model.js";
+
 import exp from "constants";
 import Alerts from "../models/alerts.model.js";
 
@@ -9,6 +13,7 @@ export const getChats = async (req, res) => {
     try {
         let obj = {};
         const chats = await UserChats.findOne({ userChats: req.user.givenId })
+        // console.log("chats123", chats)
         if (chats) obj = { ...obj, chats, };
         else {
             const newUserChat = new UserChats({
@@ -18,6 +23,7 @@ export const getChats = async (req, res) => {
             await newUserChat.save()
             obj = { ...obj, chats: newUserChat };
         }
+        // console.log("chats",obj.chats)
         for (const key in obj.chats.chats) {
             const chat = obj.chats.chats[key];
             const user = await User.findOne({ givenId: key });
@@ -39,7 +45,7 @@ export const getChats = async (req, res) => {
                 obj.chats.chats[key].createdAt = new Date();
             }
         }
-        // console.log("chats",obj.chats.chats)
+        console.log("chats",obj.chats)
         res.status(200).json(obj.chats.chats);
     } catch (error) {
         console.log("Error getting chats", error);
@@ -146,10 +152,10 @@ export const sendMessage = async (req, res) => {
             message,
         });
         await newMessage.save();
-        console.log("newMessage", newMessage)
+        // console.log("newMessage", newMessage)
         //sender
         let senderChat = await UserChats.findOne({ userChats: req.user.givenId })
-        console.log("senderChat", senderChat)   
+        // console.log("senderChat", senderChat)   
         if (!senderChat) {
             // console.log(1)
             senderChat = new UserChats({
@@ -197,17 +203,21 @@ export const sendMessage = async (req, res) => {
                 unreadMessages: 1,
                 time: newMessage.createdAt,
             }
+            receiverChat.markModified('chats');
         }
         else {
+            console.log("HELLO MIHIR I AM SAVING");
             receiverChat.set(`chats.${req.user.givenId}`, {
                 unreadMessages: receiverChat.chats[req.user.givenId].unreadMessages + 1,
                 messageId: newMessage._id,
                 time: newMessage.createdAt,
             });
+            console.log("receiverChat", receiverChat);
         }
+        senderChat.markModified('chats');
         await senderChat.save();
         await receiverChat.save();
-        console.log("senderChat", senderChat)
+        // console.log("senderChat", senderChat)
         let obj1 = { chats: senderChat.chats, };
         for (const key in obj1.chats) {
             // console.log("hello")
@@ -263,7 +273,7 @@ export const sendMessage = async (req, res) => {
         res.status(201).json(newMessage);
         // console.log("senderChat",senderChat)
         let myData = await UserChats.findOne({ userChats: req.user.givenId });
-        console.log("myData", myData);
+        // console.log("myData", myData);
 
     } catch (error) {
         console.log("Error sending message", error);
@@ -337,4 +347,21 @@ export const getAlerts=async (req, res) => {
         console.log("Error getting alerts", error);
         res.status(500).json({ message: "Internal Server Error" });
     }
+}
+
+export const temp =async (req, res) => {
+    await Offer.deleteMany({});
+    await Reviews.deleteMany({});
+    await Tasks.deleteMany({});
+    await Alerts.deleteMany({});
+    await UserChats.deleteMany({});
+    await Message.deleteMany({});
+    await User.updateMany({}, {
+  $set: {
+    tasksAccepted: 0,
+    tasksPosted: 0,
+    UserRating: 0
+  }
+});
+req.status(200).json({ message: "Done" });
 }

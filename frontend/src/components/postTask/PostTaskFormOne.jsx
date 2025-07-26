@@ -42,7 +42,7 @@ const PostTaskFormOne = ({formData,setFormData,handleNext}) => {
                 <div className="mb-5">
                     <textarea
                         placeholder="Add specific requirements (if any)"
-                        value={formData.specificRequiremetnt}
+                        value={formData.specificRequirement}
                         onChange={(e) => setFormData({ ...formData, specificRequirement: e.target.value })}
                         className="w-full bg-[#222225] text-start overflow-y-hidden text-sm leading-tight text-white p-3 rounded-xl h-13 placeholder-[#777777]"
                     />

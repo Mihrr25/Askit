@@ -26,7 +26,20 @@ app.use("/api/task",taskRoutes)
 app.use("/api/offer",offerRoutes)
 app.use("/api/messages",messageRoutes)
 
-// app.use("/api/messages",messageRoutes)
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Serve frontend build static files
+app.use(express.static(path.join(__dirname, "../../frontend/dist")));
+
+// For any unknown route, send index.html (supports React Router)
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../../frontend/dist", "index.html"));
+});
+
 
 
 

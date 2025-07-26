@@ -2,8 +2,10 @@ import React, { useState,useEffect } from 'react';
 import{useDispatch } from 'react-redux';
 import { useNavigate} from 'react-router-dom';
 // import arrowback from '../assets/arrowback.svg';
-import {login} from "../actions/authActions"
+import {login,googleAuth} from "../actions/authActions"
 import {connect} from "react-redux"
+import { GoogleOAuthProvider,useGoogleLogin } from "@react-oauth/google";
+// import { useGoogleLogin } from "@react-oauth/google";
 
 function LoginPage() {
   // const [showPassword, setShowPassword] = useState(false);
@@ -21,8 +23,31 @@ function LoginPage() {
     dispatch(login(formData));
     // console.log("1222",formData);
   }
+
+  const responseGoogle = async (authResult) => {
+		try {
+			if (authResult["code"]) {
+				dispatch(googleAuth(authResult.code));
+			} else {
+				console.log(authResult);
+				throw new Error(authResult);
+			}
+		} catch (e) {
+			console.log('Error while Google Login...', e);
+		}
+	};
+
+
+  const googleLogin = useGoogleLogin({
+		onSuccess: responseGoogle,
+		onError: responseGoogle,
+		flow: "auth-code",
+    
+	});
+
   
   return (
+    
     <div className="h-full w-full max-w-[500px] bg-black text-white flex flex-col p-4 justify-between">
       {/* Top Navigation Bar */}
       <div className="topNavBar flex w-full justify-between items-center mt-4">
@@ -110,7 +135,7 @@ function LoginPage() {
             <span className="ml-2">Continue with Facebook</span>
           </button>
           
-          <button type="button" className="bg-white text-black py-3 px-4 rounded-md flex items-center justify-center cursor-pointer">
+          <button type="button" className="bg-white text-black py-3 px-4 rounded-md flex items-center justify-center cursor-pointer" onClick={() => googleLogin()}>
           <svg width="24" height="24" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" className='mr-1.75'>
           <path d="M27.7277 11.2581H26.6V11.2H14V16.8H21.9121C20.7578 20.0599 17.6561 22.4 14 22.4C9.3611 22.4 5.6 18.6389 5.6 14C5.6 9.3611 9.3611 5.6 14 5.6C16.1413 5.6 18.0894 6.4078 19.5727 7.7273L23.5326 3.7674C21.0322 1.4371 17.6876 0 14 0C6.2685 0 0 6.2685 0 14C0 21.7315 6.2685 28 14 28C21.7315 28 28 21.7315 28 14C28 13.0613 27.9034 12.145 27.7277 11.2581Z" fill="#FFC107"/>
           <path d="M1.61426 7.4837L6.21396 10.857C7.45856 7.7756 10.4728 5.6 14.0001 5.6C16.1414 5.6 18.0895 6.4078 19.5728 7.7273L23.5327 3.7674C21.0323 1.4371 17.6877 0 14.0001 0C8.62266 0 3.95926 3.0359 1.61426 7.4837Z" fill="#FF3D00"/>
@@ -127,6 +152,7 @@ function LoginPage() {
         App Version 1.5.2.0
       </div>
     </div>
+      
   );
 }
 

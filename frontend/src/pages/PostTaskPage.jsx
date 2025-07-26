@@ -28,7 +28,8 @@ function PostTaskPage(props) {
         endDate: "",
         timeSlot:"",
         timeFlexible: false,
-        budget: 0
+        budget: 0,
+        workDays: 0,
     });
 
     const dispatch = useDispatch();
