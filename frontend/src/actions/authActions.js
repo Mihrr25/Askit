@@ -65,7 +65,7 @@ const loginFailure=(error)=>{
 export const login = (user) => async (dispatch) => {
     try {
         dispatch(loginRequest());
-        
+       
         const response=await axiosInstance.post("/auth/login",user)
         if(response.status===201){
             dispatch(loginSuccess(response.data));

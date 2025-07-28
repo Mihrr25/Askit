@@ -40,10 +40,16 @@ function PostTaskPage(props) {
             navigate("/")
         }
     }, [props.taskPosted,props, navigate])
-    
+
+    useEffect(() => {
+      if(![2, 4, 11, 13,16,17].includes(formData.categoryId)) {
+        setFormData({ ...formData, workDays: 0 });
+      }
+    }, [formData.categoryId, formData.categoryName])
 
     const handleNext = (e) => {
         e.preventDefault()
+        // alert("clicked")
         if (page <= 2) { setPage(page + 1) }
         else {
             // navigate("/signup")

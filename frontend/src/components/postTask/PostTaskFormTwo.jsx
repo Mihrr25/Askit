@@ -278,7 +278,8 @@ const PostTaskFormTwo = ({ formData, setFormData, handleNext }) => {
         </div>
         {[2, 4, 11, 13,16,17].includes(formData.categoryId)?(<div className="ques flex flex-col">
           <div className="flex items-center mb-3 flex-wrap">
-            {formData.categoryId==17?(<div className="text-lg">Total Borrow Days</div>):(<div className="text-lg">Total Work Days</div>)}
+            {formData.categoryId==17?
+            (<div className="text-lg">Total Borrow Days</div>):(<div className="text-lg">Total Work Days</div>)}
           </div>
           <div className="mb-5">
             <input
@@ -292,7 +293,7 @@ const PostTaskFormTwo = ({ formData, setFormData, handleNext }) => {
               required
             />
           </div>
-        </div>):setFormData({...formData, workDays: 0})}
+        </div>):<></>}
         
 
         <div className="endbar mb-4 mt-auto flex-col items-center">
