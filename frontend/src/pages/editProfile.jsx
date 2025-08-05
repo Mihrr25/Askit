@@ -9,12 +9,12 @@ const EditProfile = (props) => {
   const navigate = useNavigate();
   const dispatch=useDispatch();
   const [profile, setProfile] = useState({
-    age: props.user.age,
-    city: props.user.city,
-    gender: props.user.gender,
-    college: props.user.college,
-    skills: props.user.skills,
-    description: props.user.description,
+    age: props.user.age??"",
+    city: props.user.city ?? "",
+    gender: props.user.gender ?? "",
+    college: props.user.college ?? "",
+    skills: props.user.skills ?? "",
+    description: props.user.description ?? "",
   })
   // console.log(profile);
   const [updating, setUpdating] = useState(false);
@@ -150,8 +150,10 @@ const EditProfile = (props) => {
             </div>
           </div>
           <div className="ques flex flex-col">
-            <div className="flex items-center mt-2 pl-1 mb-1.5 flex-wrap">
+            <div className="flex items-center justify-between mt-2 pl-1 mb-1.5 flex-wrap ">
               <div className="text-lg">Skills</div>
+              <div className="text-sm text-[#777777] mr-2">Optional</div>
+
             </div>
             <div className="mb-2">
               <input
@@ -159,7 +161,6 @@ const EditProfile = (props) => {
                 placeholder="Enter Skills (e.g., Photography, Video Editing, etc.)"
                 value={profile.skills}
                 onChange={(e) => setProfile({ ...profile, skills: e.target.value })}
-                required
                 className="w-full bg-[#222225] text-white p-3 rounded-xl h-11 text-sm leading-tight placeholder-[#777777]"
               />
 

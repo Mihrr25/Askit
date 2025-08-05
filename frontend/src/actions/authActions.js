@@ -85,7 +85,8 @@ export const login = (user) => async (dispatch) => {
         toast.error(error.response.data.message)
     }
     else {dispatch(loginFailure(error.message));
-        toast.error("Internal Server Error")
+        toast.error("An error has occurred")
+        console.log(error)
     }
 }
 }

@@ -108,7 +108,7 @@ const Sidebar = ({ toggleSidebar, isOpen,...props }) => {
 
         <div className="absolute bottom-4 w-full text-center text-xs mb-5 text-gray-500">
           <p>All rights reserved</p>
-          <p>Powered by Google</p>
+          <p>App Version 1.0.1</p>
         </div>
       </div>
 
