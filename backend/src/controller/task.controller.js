@@ -10,7 +10,7 @@ import Counter from "../models/counter.model.js"
 
 export const postTask = async (req, res) => {
     try {        
-        const givenId = await Counter.findOneAndUpdate(
+        let givenId = await Counter.findOneAndUpdate(
             { name: "taskCounter" },
             { $inc: { seq: 1 } },
             { new: true,upsert: true }
