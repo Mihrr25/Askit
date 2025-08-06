@@ -7,6 +7,7 @@ import offerRoutes from "./routes/offer.routes.js"
 import messageRoutes from "./routes/message.route.js"
 // import messageRoutes from "./routes/message.routes.js"
 import {connectDB} from "./lib/db.js"
+import { connectRedis } from "./lib/redis.js"
 import {io,app,server} from "./lib/socket.js"
 import cors from "cors"
 
@@ -53,6 +54,7 @@ app.get("*", (req, res) => {
 
 server.listen(process.env.PORT,()=>{
     console.log("server started")
-    connectDB()
+    connectDB();
+    connectRedis();
 
 })

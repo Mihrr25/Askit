@@ -21,7 +21,8 @@ import AlertsPage from './pages/alertsPage';
 import EditProfile from './pages/editProfile';
 import ProfileViewPage from './pages/ProfileViewPage';
 import { GoogleOAuthProvider,useGoogleLogin } from "@react-oauth/google";
-
+import ForgotPasswordPage from './pages/forgetPassword';
+import ResetPasswordPage from './pages/resetPassword';
 function App(props) {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -55,7 +56,9 @@ function App(props) {
           <Routes>
             <Route path="/login" element={props.user ? <Navigate to="/" /> :<GoogleOAuthProvider clientId={1325}><LoginPage /></GoogleOAuthProvider>} />
             <Route path="/signup" element={props.user ? <Navigate to="/" /> : <GoogleOAuthProvider clientId={1235}><SignupPage /></GoogleOAuthProvider >} />
+            <Route path="/forget-password" element={props.user ? <Navigate to="/" /> : <ForgotPasswordPage />} />
             <Route path="/gettingStarted" element={props.user ? <><Navigate to="/" /></> : <GettingStarted />} />
+              <Route path="/reset-password" element={<ResetPasswordPage />} />
             <Route path="/" element={props.isAuthenticated ? <Outlet /> : <Navigate to="/gettingStarted" />}>
               <Route path="/" element={<HomePage />} />
               <Route path="/messages" element={<MessagesPage />} />

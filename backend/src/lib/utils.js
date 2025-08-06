@@ -17,6 +17,28 @@ export const generateToken = (userId, res) => {
     return token
 }
 
+export const generaterandomString = (length) => {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    for (let i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+    return result;
+}
+
+export const generateRedisToken = (id, res) => {
+    const token = jwt.sign({ id: id }, process.env.MY_JWT_SECRET, {
+        expiresIn: "15m"
+    })
+    res.cookie("rToken", token, {
+        maxAge: 1 * 1 * 15 * 60 * 1000,
+        httpOnly: true,
+        sameSite: "none", // <-- must be 'none' for cross-site cookies
+        secure: true      // <-- required for 'sameSite: none'
+    });
+    return token
+}
+
 export const sameUser = async (taskId, userId) => {
     const task = await Task.findOne({ givenId: taskId })
     if (!task) {

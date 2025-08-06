@@ -1,9 +1,11 @@
 import express from "express"
 import User from "../models/users.model.js"
 import bcrypt from "bcryptjs"
-import { generateToken } from "../lib/utils.js"
+import { generateToken,generaterandomString } from "../lib/utils.js"
 import { oauth2Client } from "../lib/Oauth.js"
 import axios from "axios";
+import redisClient from "../lib/redis.js"
+import { sendForgotPasswordEmail } from "../lib/mail.js"
 
 // import cloudinary from "../lib/cloudinary.js"
 function getRandomStrongPassword() {
@@ -190,3 +192,57 @@ export const googleAuth = async (req, res) => {
         res.status(500).json({ message: "Internal Server Error" });
     }
 }
+
+export const forgetPassword = async (req, res) => {
+    const { email } = req.body;
+    try {
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(400).json({ message: "User not found" });
+        }
+        const randomNum = Math.floor(Math.random() * 21) + 100;
+        const str = generaterandomString(randomNum);
+        redisClient.set(str, email, {
+            EX: 60 * 15, // 15 minutes expiration
+        });
+        await sendForgotPasswordEmail(email, str);
+        res.status(200).json({ message: "Password reset email sent" });
+    } catch (error) {
+        console.log("Forget password issues", error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+}
+export const checkToken = async (req, res) => {
+    const { token } = req.body;
+    try {
+        const emailId = await redisClient.get(token);
+        if (!emailId) {
+            return res.status(400).json({ message: "Invalid or expired token" });
+        }
+        const user = await User.findOne({ email: emailId });
+        res.status(200).json({ message: "Valid token", userName: user.firstName });
+    } catch (error) {
+        console.log("Check token issues", error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+}
+export const resetPassword = async (req, res) => {
+    const { token, newPassword } = req.body;
+    try {
+        const emailId= await redisClient.get(token);
+        if (!emailId) {
+            return res.status(400).json({ message: "Invalid or expired token" });
+        }
+        
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(newPassword, salt);
+        
+        await User.findOneAndUpdate({ email: emailId }, { password: hashedPassword });
+        await redisClient.del(token);
+        res.status(200).json({ message: "Password reset successfully" });
+    } catch (error) {
+        console.log("Reset password issues", error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+}
+

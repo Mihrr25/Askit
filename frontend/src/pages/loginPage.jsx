@@ -109,13 +109,13 @@ function LoginPage() {
             
     
             <div className="flex justify-end mt-1">
-              <button type="button" className="text-sm text-white" style={{cursor:"pointer", }}>Forgot password?</button>
+              <button type="button" className="text-sm text-white" style={{cursor:"pointer", }} onClick={() => navigate('/forget-password')}>Forgot password?</button>
             </div>
           </div>
           
           {/* Login Button */}
           <div className="self-center mt-4">
-          <button type="submit" className="bg-white text-black w-[10rem] h-[2.75rem] font-bold py-1 px-4 rounded-md cursor-pointer">
+          <button type="submit" className="bg-white text-black font-bold w-[10rem] h-[2.75rem] rounded-md cursor-pointer  py-1 px-4 ">
             Log In
           </button>
           </div>

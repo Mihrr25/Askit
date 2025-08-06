@@ -6,10 +6,16 @@ import mongoose from "mongoose"
 import { sameUser } from "../lib/utils.js"
 import Offer from "../models/offers.model.js"
 import Review from "../models/review.model.js"
+import Counter from "../models/counter.model.js"
 
 export const postTask = async (req, res) => {
-    try {
-        const givenId = await Task.find().countDocuments() + 10000001;
+    try {        
+        const givenId = await Counter.findOneAndUpdate(
+            { name: "taskCounter" },
+            { $inc: { seq: 1 } },
+            { new: true,upsert: true }
+        );
+
         const {
             categoryId,
             categoryName,
