@@ -15,6 +15,7 @@ export const postTask = async (req, res) => {
             { $inc: { seq: 1 } },
             { new: true,upsert: true }
         );
+        givenId = givenId.seq;
 
         const {
             categoryId,
