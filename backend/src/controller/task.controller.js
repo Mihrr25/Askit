@@ -167,7 +167,7 @@ export const completeTask = async (req, res) => {
                 await newReview.save();
                 await user.save();
             }
-            if(task.taskCompletedBy.length===2){
+            if(task.UserAcceptedOffer&&task.taskCompletedBy.includes(task.TaskPosterId)&& task.taskCompletedBy.includes(task.UserAcceptedOffer)) {
                 task.Status="Completed";
                 task.completedDate=new Date();
             }
