@@ -349,19 +349,28 @@ export const getAlerts=async (req, res) => {
     }
 }
 
+// export const temp =async (req, res) => {
+//     await Offer.deleteMany({});
+//     await Reviews.deleteMany({});
+//     await Tasks.deleteMany({});
+//     await Alerts.deleteMany({});
+//     await UserChats.deleteMany({});
+//     await Message.deleteMany({});
+//     await User.updateMany({}, {
+//   $set: {
+//     tasksAccepted: 0,
+//     tasksPosted: 0,
+//     UserRating: 0
+//   }
+// });
+// req.status(200).json({ message: "Done" });
+// }
+
 export const temp =async (req, res) => {
-    await Offer.deleteMany({});
-    await Reviews.deleteMany({});
-    await Tasks.deleteMany({});
-    await Alerts.deleteMany({});
-    await UserChats.deleteMany({});
-    await Message.deleteMany({});
-    await User.updateMany({}, {
-  $set: {
-    tasksAccepted: 0,
-    tasksPosted: 0,
-    UserRating: 0
-  }
-});
-req.status(200).json({ message: "Done" });
+    let task=await Task.findOne({givenId:10000004})
+    task.Status="Completed";
+    task.completedDate=new Date();
+    await task.save();
+
+    res.status(200).json({ message: "Done" });
 }
