@@ -14,10 +14,10 @@ function GettingStarted() {
     }
   }
 
-  const imgArray=['https://lh3.googleusercontent.com/d/1auZnNnSKCInKiFrOgM2xYk2Dyx2OIXUd=s800'
-    ,"https://lh3.googleusercontent.com/d/1qJ_IzGuCs4HvzZgKeuuqG-ubzD9MH9_j=s800"
-    ,"https://lh3.googleusercontent.com/d/1aa-ej5XTO-muCtZxP-YDFQmph4DIPUv7=s800"
-    ,"https://lh3.googleusercontent.com/d/1ohOIsfDEwD5LXxjWQvmMQiVEmgfAISM6=s800"
+  const imgArray=['/gsIMG1.png'
+    ,'/gsIMG2.png'
+    ,'/gsIMG3.png'
+    ,'/gsIMG4.png'
   ];
   
 
