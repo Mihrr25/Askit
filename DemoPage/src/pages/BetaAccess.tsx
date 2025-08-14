@@ -1,42 +1,61 @@
-import { useState } from 'react';
+import React,{ useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Mail, Instagram, Linkedin, Rocket, CheckCircle, Target, Award, ArrowRight } from 'lucide-react';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 
 const BetaAccess = () => {
   const [email, setEmail] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   
   const { toast } = useToast();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!email) {
+    // xxx
+    // if (!email) {
+    //   toast({
+    //     title: "Error",
+    //     description: "Please enter your email address",
+    //     variant: "destructive",
+    //   });
+    //   return;
+    // }
+
+    setIsLoading(true);
+
+    try {
+      // Save email to Supabase
+      // xxx
+      // const { error } = await supabase
+      //   .from('beta_signups')
+      //   .insert([{ email }]);
+
+      // if (error) {
+      //   // Check if it's a duplicate email error
+      //   if (error.code !== '23505') {
+      //     throw error;
+      //   }
+      // }
+
+      setEmail('');
+      
+      // Redirect to the main platform immediately
+      window.open('/app', '_blank');
+
+    } catch (error) {
+      console.error('Error saving beta signup:', error);
       toast({
         title: "Error",
-        description: "Please enter your email address",
+        description: "Failed to save your email. Please try again.",
         variant: "destructive",
       });
-      return;
+    } finally {
+      setIsLoading(false);
     }
-
-    // Store email (for documentation)
-    console.log('Beta access requested by:', email);
-
-    toast({
-      title: "Welcome to Askit Beta!",
-      description: "Redirecting you to the platform... Don't forget to add Askit to your homescreen for quick access!",
-    });
-
-    setEmail('');
-    
-    // Redirect to the main platform
-    setTimeout(() => {
-      window.open('https://askit-zeta.vercel.app/', '_blank');
-    }, 3000);
   };
 
   return (
@@ -74,6 +93,40 @@ const BetaAccess = () => {
                   Now, we're opening our doors to a limited number of <span className="text-primary font-semibold">early users</span> to 
                   test the beta version of Askit.
                 </p>
+              </div>
+
+              {/* Email Signup */}
+              <div className="bg-card border border-border rounded-2xl p-8 mb-16">
+                <div className="text-center mb-8">
+                  <h3 className="text-2xl font-bold font-poppins mb-4">
+                    Get Access Now
+                  </h3>
+                  <p className="text-muted-foreground">
+                    Enter your email below and get access to the platform
+                  </p>
+                </div>
+
+                <form onSubmit={handleSubmit} className="max-w-md mx-auto">
+                  <div className="flex gap-4">
+                    <Input
+                      type="email"
+                      placeholder="Enter your email address"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      // required xxx
+                      className="flex-1"
+                    />
+                    <Button type="submit" disabled={isLoading} className="bg-primary hover:bg-primary/80">
+                      {isLoading ? 'Saving...' : 'Get Beta Access'}
+                    </Button>
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-4 text-center">
+                    By joining the platform, you agree with our{" "}
+                    <a href="/terms-of-use" className="text-primary hover:underline">Terms of Use</a>
+                    {" "}and{" "}
+                    <a href="/privacy-policy" className="text-primary hover:underline">Privacy Policy</a>
+                  </p>
+                </form>
               </div>
 
               {/* Benefits */}
@@ -118,40 +171,6 @@ const BetaAccess = () => {
                   Whether you need help with everyday tasks or simply want to explore how Askit works, 
                   this is your chance to be part of something built for students, by students.
                 </p>
-              </div>
-
-              {/* Email Signup */}
-              <div className="bg-card border border-border rounded-2xl p-8 mb-16">
-                <div className="text-center mb-8">
-                  <h3 className="text-2xl font-bold font-poppins mb-4">
-                    🔓 Get Early Access
-                  </h3>
-                  <p className="text-muted-foreground">
-                    Enter your email below and get access to the platform
-                  </p>
-                </div>
-
-                <form onSubmit={handleSubmit} className="max-w-md mx-auto">
-                  <div className="flex gap-4">
-                    <Input
-                      type="email"
-                      placeholder="Enter your email address"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      required
-                      className="flex-1"
-                    />
-                    <Button type="submit" className="bg-primary hover:bg-primary/80">
-                      Get Beta Access
-                    </Button>
-                  </div>
-                  <p className="text-xs text-muted-foreground mt-4 text-center">
-                    By joining the platform, you agree with our{" "}
-                    <a href="/terms-of-use" className="text-primary hover:underline">Terms of Use</a>
-                    {" "}and{" "}
-                    <a href="/privacy-policy" className="text-primary hover:underline">Privacy Policy</a>
-                  </p>
-                </form>
               </div>
 
               {/* Service Provider Section */}

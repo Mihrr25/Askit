@@ -90,14 +90,14 @@ const Categories = () => {
               return (
                 <div
                   key={index}
-                  className="group p-6 bg-card border border-border rounded-xl hover:border-primary/50 hover:shadow-glow transition-all duration-500 transform hover:-translate-y-3 hover:scale-105 animate-fade-in hover:rotate-1"
+                  className="group p-4 bg-card border border-border rounded-xl hover:border-primary/50 hover:shadow-glow transition-all duration-500 transform hover:-translate-y-3 hover:scale-105 animate-fade-in hover:rotate-1"
                   style={{
                     animationDelay: `${index * 150}ms`
                   }}
                 >
                   <div className="text-center">
-                    <div className="w-12 h-12 bg-primary/20 rounded-lg flex items-center justify-center mx-auto mb-4 group-hover:bg-primary/30 transition-all duration-300 group-hover:scale-110 group-hover:rotate-12">
-                      <Icon className="w-6 h-6 text-primary group-hover:scale-125 transition-transform duration-300" />
+                    <div className="w-10 h-10 bg-primary/20 rounded-lg flex items-center justify-center mx-auto mb-3 group-hover:bg-primary/30 transition-all duration-300 group-hover:scale-110 group-hover:rotate-12">
+                      <Icon className="w-5 h-5 text-primary group-hover:scale-125 transition-transform duration-300" />
                     </div>
                     
                     <h3 className="font-semibold font-poppins mb-2 text-foreground group-hover:text-primary transition-colors">

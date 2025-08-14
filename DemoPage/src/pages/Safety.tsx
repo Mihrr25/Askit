@@ -38,7 +38,7 @@ const Safety = () => {
                 
                 <div className="flex items-start space-x-3">
                   <span className="text-primary font-bold">6.</span>
-                  <p className="text-foreground">Do not send or accept cash or off-platform payments, even if it seems convenient.</p>
+                  <p className="text-foreground">Always clarify the task scope clearly in the chat to avoid confusion or conflict later.</p>
                 </div>
                 
                 <div className="flex items-start space-x-3">

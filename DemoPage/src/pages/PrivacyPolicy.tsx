@@ -23,7 +23,7 @@ const PrivacyPolicy = () => {
                   <h2 className="text-2xl font-bold font-poppins mb-4 text-foreground">1. Introduction</h2>
                   <p className="text-muted-foreground mb-6">
                     At Askit, we value your privacy. This Privacy Policy outlines how we collect, use, and protect your personal data while you use our MVP platform hosted on{" "}
-                    <a href="https://askit-zeta.vercel.app" className="text-primary hover:underline">askit-zeta.vercel.app</a>.
+                    <a href="https://askit-1.onrender.com/app/" className="text-primary hover:underline">https://askit-1.onrender.com/app/</a>.
                   </p>
 
                   <h2 className="text-2xl font-bold font-poppins mb-4 text-foreground">2. Information We Collect</h2>

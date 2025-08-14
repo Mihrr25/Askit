@@ -105,11 +105,11 @@ const Footer = () => {
               <h3 className="font-semibold font-poppins mb-4 text-foreground">Contact</h3>
               <div className="space-y-3">
                 <a 
-                  href="mailto:askit.socials@gmail.com"
+                  href="mailto:support@askitindia.com"
                   className="flex items-center space-x-2 text-muted-foreground hover:text-primary transition-colors group"
                 >
                   <Mail className="w-4 h-4" />
-                  <span>askit.socials@gmail.com</span>
+                  <span>support@askitindia.com</span>
                 </a>
               </div>
             </div>

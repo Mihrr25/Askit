@@ -249,7 +249,7 @@ const TermsOfUse = () => {
 
                   <h2 className="text-2xl font-bold font-poppins mb-4 text-foreground">14. CONTACT</h2>
                   <p className="text-muted-foreground">
-                    <strong>Email:</strong> <a href="mailto:askit.india@gmail.com" className="text-primary hover:underline font-semibold">askit.india@gmail.com</a>
+                    <strong>Email:</strong> <a href="mailto:askit.socials@gmail.com" className="text-primary hover:underline font-semibold">askit.socials@gmail.com</a>
                   </p>
                 </div>
               </div>
