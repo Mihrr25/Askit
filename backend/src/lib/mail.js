@@ -3,7 +3,16 @@ import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
 
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  host: "smtp.hostinger.com",
+secure: true, 
+secureConnection: false,
+tls: {
+   ciphers: "SSLv3",
+},
+requireTLS: true,
+port: 465,
+debug: true,
+connectionTimeout: 10000,
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
