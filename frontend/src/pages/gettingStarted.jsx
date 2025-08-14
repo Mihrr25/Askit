@@ -14,10 +14,10 @@ function GettingStarted() {
     }
   }
 
-  const imgArray=['/gsIMG1.png'
-    ,'/gsIMG2.png'
-    ,'/gsIMG3.png'
-    ,'/gsIMG4.png'
+  const imgArray=['/app/gsIMG1.png'
+    ,'/app/gsIMG2.png'
+    ,'/app/gsIMG3.png'
+    ,'/app/gsIMG4.png'
   ];
   
 
