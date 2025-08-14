@@ -456,7 +456,7 @@ function TaskPage(props) {
               </div>
             </div>
           )}
-          {props.task.task.workDays && (
+          {props.task.task.workDays && props.task.task.workDays >= 0 ? (
             <div className="flex flex-col w-full mt-5 mb-4">
               {props.task.task.categoryId == 17 ? (
                 <div className="text-[#a1a1a1] text-[0.8rem]">
@@ -475,7 +475,7 @@ function TaskPage(props) {
                   : ""}
               </div>
             </div>
-          )}
+          ):""}
 
           {(props.task.task.TaskPosterId == props.user.givenId ||
             props.task.task.UserAcceptedOffer == props.user.givenId) &&
