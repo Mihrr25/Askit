@@ -2,7 +2,7 @@ import React from 'react';
 import { 
   HomeworkAndAssignments, OfficeWork, Lift_Move_Pack, Tutoring, ComputerIT, Cleaning, 
   VideoEditing, Photography, Design, DeliveryAndErrands, PetCare, GardeningAndPlantCare, 
-  Events, Custom, Socializing 
+  Events, Custom, Socializing , FitnessAndHealth,BorrowingAndLending
 } from '../../assets/Icons';
 
 const IconSending = ({ id }) => {
@@ -37,6 +37,10 @@ const IconSending = ({ id }) => {
       return <Custom h={"25px"} />;
     case 15:
       return <Socializing h={"25px"} />;
+    case 16:
+      return <FitnessAndHealth h={"25px"} />;
+    case 17:
+      return <BorrowingAndLending h={"25px"} />;
     default:
       return <div>Invalid ID</div>;
   }
