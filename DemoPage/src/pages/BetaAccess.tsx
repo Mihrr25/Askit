@@ -15,31 +15,30 @@ const BetaAccess = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // xxx
-    // if (!email) {
-    //   toast({
-    //     title: "Error",
-    //     description: "Please enter your email address",
-    //     variant: "destructive",
-    //   });
-    //   return;
-    // }
+    
+    if (!email) {
+      toast({
+        title: "Error",
+        description: "Please enter your email address",
+        variant: "destructive",
+      });
+      return;
+    }
 
     setIsLoading(true);
 
     try {
       // Save email to Supabase
-      // xxx
-      // const { error } = await supabase
-      //   .from('beta_signups')
-      //   .insert([{ email }]);
+      const { error } = await supabase
+        .from('beta_signups')
+        .insert([{ email }]);
 
-      // if (error) {
-      //   // Check if it's a duplicate email error
-      //   if (error.code !== '23505') {
-      //     throw error;
-      //   }
-      // }
+      if (error) {
+        // Check if it's a duplicate email error
+        if (error.code !== '23505') {
+          throw error;
+        }
+      }
 
       setEmail('');
       
@@ -113,7 +112,7 @@ const BetaAccess = () => {
                       placeholder="Enter your email address"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      // required xxx
+                      required
                       className="flex-1"
                     />
                     <Button type="submit" disabled={isLoading} className="bg-primary hover:bg-primary/80">
