@@ -155,9 +155,9 @@ const About = () => {
               {/* Aryan Vaid */}
               <div className="bg-card border border-border rounded-xl p-8 text-center">
                 <img 
-                  src="/lovable-uploads/98044be0-7dee-47df-826d-1e16088c46a8.png" 
+                  src="/lovable-uploads/dd997ccf-4676-4d0a-bf64-e27302524d5b.png" 
                   alt="Aryan Vaid" 
-                  className="w-24 h-24 rounded-full object-cover mx-auto mb-6"
+                  className="w-32 h-32 rounded-full object-cover mx-auto mb-6"
                 />
                 <h3 className="text-xl font-bold font-poppins mb-2">Aryan Vaid</h3>
                 <p className="text-primary font-semibold mb-4">The Co-founder</p>
@@ -187,9 +187,9 @@ const About = () => {
               {/* Aadhitya Sachdeva */}
               <div className="bg-card border border-border rounded-xl p-8 text-center">
                 <img 
-                  src="/lovable-uploads/d5ea9db7-a032-4f9f-bd1d-59a01d0994fb.png" 
+                  src="/lovable-uploads/a7a82bd0-b189-4fcd-9f30-ff9a9824d45d.png" 
                   alt="Aadhitya Sachdeva" 
-                  className="w-24 h-24 rounded-full object-cover mx-auto mb-6"
+                  className="w-32 h-32 rounded-full object-cover mx-auto mb-6"
                 />
                 <h3 className="text-xl font-bold font-poppins mb-2">Aadhitya Sachdeva</h3>
                 <p className="text-primary font-semibold mb-4">The Co-founder</p>
