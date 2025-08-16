@@ -54,12 +54,12 @@ export const getChats = async (req, res) => {
 }
 
 export const getMessages = async (req, res) => {
-    const { friendId } = req.params;
-    const user = await User.findOne({ givenId: friendId })
-    if (!user) {
-        return res.status(400).json({ message: "Invalid User" })
-    }
     try {
+        const { friendId } = req.params;
+        const user = await User.findOne({ givenId: friendId })
+        if (!user) {
+            return res.status(400).json({ message: "Invalid User" })
+        }
         const messages = await Message.find({
             $or: [{ senderId: req.user.givenId, receiverId: friendId }, { receiverId: req.user.givenId, senderId: friendId }]
         }).sort({ createdAt: 1 });
