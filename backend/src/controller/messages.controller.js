@@ -56,6 +56,9 @@ export const getChats = async (req, res) => {
 export const getMessages = async (req, res) => {
     try {
         const { friendId } = req.params;
+        if (!friendId || isNaN(friendId)) {
+            return res.status(400).json({ message: "Invalid friend ID" });
+        }
         const user = await User.findOne({ givenId: friendId })
         if (!user) {
             return res.status(400).json({ message: "Invalid User" })
