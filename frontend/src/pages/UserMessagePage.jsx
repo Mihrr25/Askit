@@ -138,13 +138,13 @@ const UserMessagePage = (props) => {
                         message.senderId !== props.user.givenId ? (
                             <div key={message._id} className="flex w-full justify-start mt-2">
                                 <div className="bg-[#f2f2f7] px-4 pb-1 pt-2 max-w-7/9 rounded-t-xl rounded-bl-sm rounded-br-xl flex flex-col">
-                                    <div className="text-[#090909] text-md pr-1">{message.message}</div>
+                                    <div className="text-[#090909] text-md break-all pr-1">{message.message}</div>
                                     <div className="text-xs text-[#555557] self-end"> {formatDate(message.createdAt)}</div>
                                 </div>
                             </div>
                         ) : (<div key={message._id} className="flex w-full justify-end mt-2">
                             <div className="bg-[#007aff] px-4 pb-1 pt-2 max-w-7/9 rounded-t-xl rounded-br-sm rounded-bl-xl flex flex-col">
-                                <div className="text-[#ffffff] text-md pr-1">{message.message}</div>
+                                <div className="text-[#ffffff] text-md break-all pr-1">{message.message}</div>
                                 <div className="text-xs self-end font-light"> {formatDate(message.createdAt)}</div>
                             </div>
                         </div>)
