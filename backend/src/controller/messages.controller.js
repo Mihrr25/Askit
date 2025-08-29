@@ -148,6 +148,7 @@ export const sendMessage = async (req, res) => {
     // console.log("message",req.body)
     const friendId = id;
     // console.log("friendId",friendId)
+    const time1 = performance.now();
     try {
         const newMessage = new Message({
             senderId: req.user.givenId,
@@ -155,6 +156,10 @@ export const sendMessage = async (req, res) => {
             message,
         });
         await newMessage.save();
+        const time2 = performance.now();
+
+        console.log(`Call to send message took ${(time2 - time1)/1000} milliseconds.`);
+        
         // console.log("newMessage", newMessage)
         //sender
         let senderChat = await UserChats.findOne({ userChats: req.user.givenId })
@@ -209,17 +214,23 @@ export const sendMessage = async (req, res) => {
             receiverChat.markModified('chats');
         }
         else {
-            console.log("HELLO MIHIR I AM SAVING");
+            // console.log("HELLO MIHIR I AM SAVING");
             receiverChat.set(`chats.${req.user.givenId}`, {
                 unreadMessages: receiverChat.chats[req.user.givenId].unreadMessages + 1,
                 messageId: newMessage._id,
                 time: newMessage.createdAt,
             });
-            console.log("receiverChat", receiverChat);
+            // console.log("receiverChat", receiverChat);
         }
         senderChat.markModified('chats');
         await senderChat.save();
         await receiverChat.save();
+
+        let time3=performance.now();
+
+        console.log(`Call to save chats took ${(time3 - time2)/1000} milliseconds.`);
+
+
         // console.log("senderChat", senderChat)
         let obj1 = { chats: senderChat.chats, };
         for (const key in obj1.chats) {
@@ -273,9 +284,12 @@ export const sendMessage = async (req, res) => {
         // console.log(obj1)
 
         //emit to sender
+        const time4=performance.now();
+
+        console.log(`Call to emit messages took ${(time4 - time3)/1000} milliseconds.`);
+
         res.status(201).json(newMessage);
         // console.log("senderChat",senderChat)
-        let myData = await UserChats.findOne({ userChats: req.user.givenId });
         // console.log("myData", myData);
 
     } catch (error) {
