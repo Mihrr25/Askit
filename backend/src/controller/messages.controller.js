@@ -277,6 +277,7 @@ export const sendMessage = async (req, res) => {
                 obj2.chats[key].createdAt = new Date();
             }
         }
+        const timet=performance.now();
 
         io.to(userSocketMap[friendId]).emit("newMessage", newMessage);
         io.to(userSocketMap[friendId]).emit("updatedChat", obj2.chats);
@@ -287,6 +288,7 @@ export const sendMessage = async (req, res) => {
         const time4=performance.now();
 
         console.log(`Call to emit messages took ${(time4 - time3)/1000} milliseconds.`);
+        console.log(`Call to emit messages took ${(time4 - timet)/1000} milliseconds.`);
 
         res.status(201).json(newMessage);
         // console.log("senderChat",senderChat)
