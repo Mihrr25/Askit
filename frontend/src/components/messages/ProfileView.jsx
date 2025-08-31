@@ -159,17 +159,19 @@ const ChatList = (props) => {
   return (
     <div className="w-full bg-black text-white rounded-lg">
       
-      {Object.entries(props.userChat.chats).map(([key, chat]) => (
-        <ChatListItem
-          key={key}
-          name={chat.userDetails.firstName}
-          message={chat.message}
-          isOnline={props.userChat.onlineUsers.includes(key)}
-          profilePic={chat.userDetails.profilePic}
-          unreadMessages={chat.unreadMessages}
-          givenId={key}
-        />
-      ))}
+      {Object.entries(props.userChat.chats)
+  .sort(([, a], [, b]) => new Date(b.createdAt) - new Date(a.createdAt)) // newest first
+  .map(([key, chat]) => (
+    <ChatListItem
+      key={key}
+      name={chat.userDetails.firstName}
+      message={chat.message}
+      isOnline={props.userChat.onlineUsers.includes(key)}
+      profilePic={chat.userDetails.profilePic}
+      unreadMessages={chat.unreadMessages}
+      givenId={key}
+    />
+))}
     </div>
   );
 };
