@@ -27,9 +27,10 @@ export default function (state = initialState, action) {
                 chats:null
             }
         case SET_CHATS_UPDATE:
+            if (!payload.userId) return state;
             return {
                 ...state,
-                chats:payload
+                chats:{...state.chats,[payload.userId]:payload.chat}
             }
         case SET_ONLINE_USERS:
             return {

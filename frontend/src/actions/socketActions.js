@@ -22,30 +22,30 @@ export const connectSocket =()=> (dispatch,getState) => {
                 type: SOCKET_DISCONNECTED
             })
         });
-        let state=getState();
         socket.on("updatedChat", (data) => {
             console.log("Updated Chats", data);
             dispatch(setChatsUpdate(data))
         });
         socket.on("newMessage", (data) => {
-
-            if(state.message.friendId!==data.senderId){
+            let state=getState();
+            console.log("New Message", data);
+            console.log(state.message.friendId , data.senderId.toString());
+            if (state.message.friendId != data.senderId.toString()) {
+                // User is in a different chat → show notification
                 toast("New Message Received", {
                     icon: "📩",
                     duration: 5000,
-                    
                 });
+            } else {
+                // User is actually viewing this chat → mark messages as read
+                dispatch(setMessagesUpdate(data));
+                axiosInstance
+                .get(`/messages/update/${data.senderId}`)
+                .catch(err => console.error("Failed to update messages", err))
+                .finally(() => console.log("Message update request completed"))
             }
-            
-            console.log("new Messages", data);
-            dispatch(setMessagesUpdate(data))
-            
-            console.log(state.message.friendId);
-            console.log(data.senderId);
-          
-            axiosInstance.get(`/messages/update/${data.senderId}`)
-            
         });
+
         socket.on("getOnlineUsers", (data) => {
             console.log("Online Users", data);
             dispatch({

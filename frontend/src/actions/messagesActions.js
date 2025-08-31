@@ -90,9 +90,10 @@ const sendMessageRequest = () => {
     }
 }
 
-const sendMessageSuccess = () => {
+const sendMessageSuccess = (data) => {
     return {
         type: SEND_MESSAGE_SUCCESS,
+        payload: data
     }
 }
 const sendMessageFailure = error => {

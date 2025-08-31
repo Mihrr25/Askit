@@ -132,7 +132,27 @@ export const getMessages = async (req, res) => {
             }
         }
 
-        io.to(userSocketMap[req.user.givenId]).emit("updatedChat", obj1.chats);
+        if(sb==false){
+            let obj12={userId:friendId,chat:senderChat.chats[friendId.toString()]};
+            obj12.chat.userDetails={
+                firstName: user.firstName,
+                lastName: user.lastName,
+                givenId: user.givenId,
+                profilePic: user.profilePic,
+            }
+            let message= await Message.findById(senderChat.chats[friendId.toString()].messageId).select("message createdAt");
+            if (message) {
+                obj12.chat.message = message.message;
+                obj12.chat.createdAt = message.createdAt;
+            }
+            else {
+                obj12.chat.message = "";
+                obj12.chat.createdAt = new Date();
+            }
+            io.to(userSocketMap[req.user.givenId]).emit("updatedChat", obj12);
+        }
+
+        // io.to(userSocketMap[req.user.givenId]).emit("updatedChat", obj1.chats);
 
 
         res.status(201).json(obj);
@@ -150,6 +170,7 @@ export const sendMessage = async (req, res) => {
     // console.log("friendId",friendId)
     const time1 = performance.now();
     try {
+        const friendUser = await User.findOne({ givenId: friendId });
         const newMessage = new Message({
             senderId: req.user.givenId,
             receiverId: friendId,
@@ -162,8 +183,10 @@ export const sendMessage = async (req, res) => {
         
         // console.log("newMessage", newMessage)
         //sender
-        let senderChat = await UserChats.findOne({ userChats: req.user.givenId })
-        // console.log("senderChat", senderChat)   
+        (async()=>{
+
+            let senderChat = await UserChats.findOne({ userChats: req.user.givenId })
+            // console.log("senderChat", senderChat)   
         if (!senderChat) {
             // console.log(1)
             senderChat = new UserChats({
@@ -171,13 +194,13 @@ export const sendMessage = async (req, res) => {
                 chats: {}
             })
             await senderChat.save()
-
+            
         }
 
         if (!senderChat.chats) {
 
             senderChat.chats = {}
-        }
+            }
         // let senderChat=await UserChats.findOne({userChats:req.user.givenId})
         if (!senderChat.chats[friendId]) {
             senderChat.chats[friendId] = {
@@ -225,74 +248,43 @@ export const sendMessage = async (req, res) => {
         senderChat.markModified('chats');
         await senderChat.save();
         await receiverChat.save();
-
+        
         let time3=performance.now();
-
+        
         console.log(`Call to save chats took ${(time3 - time2)/1000} milliseconds.`);
-
-
-        // console.log("senderChat", senderChat)
-        let obj1 = { chats: senderChat.chats, };
-        for (const key in obj1.chats) {
-            // console.log("hello")
-            const chat = obj1.chats[key];
-            const user = await User.findOne({ givenId: key });
-            if (user) {
-                obj1.chats[key].userDetails = {
-                    firstName: user.firstName,
-                    lastName: user.lastName,
-                    givenId: user.givenId,
-                    profilePic: user.profilePic,
-                };
-            }
-            let message = await Message.findById(chat.messageId).select("message createdAt")
-            if (message) {
-                obj1.chats[key].message = message.message;
-                obj1.chats[key].createdAt = message.createdAt;
-            }
-            else {
-                obj1.chats[key].message = "";
-                obj1.chats[key].createdAt = new Date();
-            }
+        
+        let obj12={userId:friendId,chat:senderChat.chats[friendId.toString()]};
+        obj12.chat.userDetails={
+            firstName: friendUser.firstName,
+            lastName: friendUser.lastName,
+            givenId: friendUser.givenId,
+            profilePic: friendUser.profilePic,
         }
-        let obj2 = { chats: receiverChat.chats, };
-        for (const key in obj2.chats) {
-            const chat = obj2.chats[key];
-            const user = await User.findOne({ givenId: key });
-            if (user) {
-                obj2.chats[key].userDetails = {
-                    firstName: user.firstName,
-                    lastName: user.lastName,
-                    givenId: user.givenId,
-                    profilePic: user.profilePic,
-                };
-            }
-            let message = await Message.findById(chat.messageId).select("message createdAt")
-            if (message) {
-                obj2.chats[key].message = message.message;
-                obj2.chats[key].createdAt = message.createdAt;
-            }
-            else {
-                obj2.chats[key].message = "";
-                obj2.chats[key].createdAt = new Date();
-            }
+        obj12.chat.message=newMessage.message;
+        obj12.chat.createdAt=newMessage.createdAt;
+        
+        let obj22={userId:req.user.givenId,chat:receiverChat.chats[req.user.givenId.toString()]};
+        obj22.chat.userDetails={
+            firstName: req.user.firstName,
+            lastName: req.user.lastName,
+            givenId: req.user.givenId,
+            profilePic: req.user.profilePic,
         }
+        obj22.chat.message=newMessage.message;
+        obj22.chat.createdAt=newMessage.createdAt;
+        
         const timet=performance.now();
-
+        
         io.to(userSocketMap[friendId]).emit("newMessage", newMessage);
-        io.to(userSocketMap[friendId]).emit("updatedChat", obj2.chats);
-        io.to(userSocketMap[req.user.givenId]).emit("updatedChat", obj1.chats);
-        // console.log(obj1)
-
-        //emit to sender
+        io.to(userSocketMap[friendId]).emit("updatedChat", obj22);
+        io.to(userSocketMap[req.user.givenId]).emit("updatedChat", obj12);
         const time4=performance.now();
-
+        
         console.log(`Call to emit messages took ${(time4 - time3)/1000} milliseconds.`);
         console.log(`Call to emit messages took ${(time4 - timet)/1000} milliseconds.`);
+    })();
 
         res.status(201).json(newMessage);
-        // console.log("senderChat",senderChat)
-        // console.log("myData", myData);
 
     } catch (error) {
         console.log("Error sending message", error);
@@ -303,6 +295,10 @@ export const sendMessage = async (req, res) => {
 export const updateMessages = async (req, res) => {
     const { friendId } = req.params;
     try {
+        const user = await User.findOne({ givenId: friendId });
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
         const userChat = await UserChats.findOne({ userChats: req.user.givenId });
         if (!userChat) {
             return res.status(404).json({ message: "User chat not found" });
@@ -325,31 +321,25 @@ export const updateMessages = async (req, res) => {
         await userChat.save();
 
 
-        let obj1 = { chats: userChat.chats, };
-        for (const key in obj1.chats) {
-            // console.log("hello")
-            const chat = obj1.chats[key];
-            const user = await User.findOne({ givenId: key });
-            if (user) {
-                obj1.chats[key].userDetails = {
-                    firstName: user.firstName,
-                    lastName: user.lastName,
-                    givenId: user.givenId,
-                    profilePic: user.profilePic,
-                };
+        let obj12={userId:friendId,chat:userChat.chats[friendId.toString()]};
+            obj12.chat.userDetails={
+                firstName: user.firstName,
+                lastName: user.lastName,
+                givenId: user.givenId,
+                profilePic: user.profilePic,
             }
-            let message = await Message.findById(chat.messageId).select("message createdAt")
+            let message= await Message.findById(userChat.chats[friendId.toString()].messageId).select("message createdAt");
             if (message) {
-                obj1.chats[key].message = message.message;
-                obj1.chats[key].createdAt = message.createdAt;
+                obj12.chat.message = message.message;
+                obj12.chat.createdAt = message.createdAt;
             }
             else {
-                obj1.chats[key].message = "";
-                obj1.chats[key].createdAt = new Date();
+                obj12.chat.message = "";
+                obj12.chat.createdAt = new Date();
             }
-        }
+            io.to(userSocketMap[req.user.givenId]).emit("updatedChat", obj12);
 
-        io.to(userSocketMap[req.user.givenId]).emit("updatedChat", obj1.chats);
+        // io.to(userSocketMap[req.user.givenId]).emit("updatedChat", obj1.chats);
         res.status(200).json({ message: "Done" });
         console.log("done")
     } catch (error) {
