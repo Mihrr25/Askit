@@ -10,6 +10,7 @@ import {connectDB} from "./lib/db.js"
 import { connectRedis } from "./lib/redis.js"
 import {io,app,server} from "./lib/socket.js"
 import cors from "cors"
+// import { saveCSVData } from "./controller/temp.controller.js"
 
 dotenv.config()
 
@@ -56,5 +57,6 @@ server.listen(process.env.PORT,()=>{
     console.log("server started")
     connectDB();
     connectRedis();
+    // saveCSVData();
 
 })
