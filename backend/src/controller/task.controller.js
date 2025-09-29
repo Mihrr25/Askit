@@ -200,27 +200,6 @@ export const getMyTask = async (req, res) => {
     }
 }
 
-export const temp = async (req, res) => {
-    try {
-        // let nextGivenId = 10000001;
-        // // const Users = await User.find();
-        // const Tasks= await Task.find();;
-        // for (const user of Tasks) {
-        //     await Task.findByIdAndUpdate(user._id, { TaskPosterId: 10000001 });
-        // }
-        let password = "1234";
-        const salt = await bcrypt.genSalt(10)
-        const hashedPassword = await bcrypt.hash(password, salt);
-        const users = await User.find();
-        for (const user of users) {
-            await User.findByIdAndUpdate(user._id, { password: hashedPassword });
-        }
-        res.status(200).json(users);
-    } catch (error) {
-        console.log("error", error);
-        res.status(500).json({ message: "Internal Server Error" });
-    }
-};
 
 export const deleteTask = async (req, res) => {
     try {
