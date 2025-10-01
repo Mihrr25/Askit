@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import ChatInput from '../components/chatInput';
 import { connect, useDispatch } from 'react-redux';
 import { fetchMessages, sendMessage, sendMessageReset,setMessagesUpdateReset } from '../actions/messagesActions';
+import { VerifiedIcon } from '../assets/Icons';
 
 
 const UserMessagePage = (props) => {
@@ -120,7 +121,7 @@ const UserMessagePage = (props) => {
                         {props.messages.messages.userDetails.firstName.charAt(0)}
                     </div>
                     <div className="flex flex-col justify-evenly">
-                        <div className="text-[#a7a7a7] text-xl font-semibold">{`${props.messages.messages.userDetails.firstName} ${props.messages.messages.userDetails.lastName ? props.messages.messages.userDetails.lastName : ""}`}</div>
+                        <div className="text-[#a7a7a7] text-xl font-semibold flex items-center gap-1">{`${props.messages.messages.userDetails.firstName} ${props.messages.messages.userDetails.lastName ? props.messages.messages.userDetails.lastName : ""}`} {props.messages.messages.userDetails.verified && <VerifiedIcon h={18} w={18} />}</div>
                         {props.userChat.onlineUsers.includes(props.messages.messages.userDetails.givenId.toString()) && <div className="text-[#348a15] text-m font-medium flex">
                             ● Online</div>}
                     </div>

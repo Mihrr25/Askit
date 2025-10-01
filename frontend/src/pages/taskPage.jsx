@@ -7,6 +7,7 @@ import { StarFilled, EmptyStar } from "../assets/Icons";
 import { COMPLETE_TASK_RESET } from "../lib/types";
 import { axiosInstance } from "../lib/axios";
 import toast from "react-hot-toast";
+import {VerifiedIcon} from '../assets/Icons';
 
 function TaskPage(props) {
   const navigate = useNavigate();
@@ -60,6 +61,7 @@ function TaskPage(props) {
     const diffDays = Math.floor(diffHours / 24); // Convert to days
     const diffWeeks = Math.floor(diffDays / 7); // Convert to weeks
     const diffMonths = Math.floor(diffDays / 30); // Approximate months
+    // console.log(diffMs, diffSec, diffMin, diffHours, diffDays, diffWeeks);
 
     if (diffHours < 1) return "Just now";
     if (diffHours === 1) return "1 hour ago";
@@ -68,7 +70,7 @@ function TaskPage(props) {
     if (diffDays < 7) return `${diffDays} days ago`;
     if (diffWeeks === 1) return "1 week ago";
     if (diffWeeks < 4) return `${diffWeeks} weeks ago`;
-    if (diffMonths === 1) return "1 month ago";
+    if (diffMonths === 0) return "1 month ago";
     return `${diffMonths} months ago`;
   }
   const [feedback, setFeedback] = useState({
@@ -381,9 +383,9 @@ function TaskPage(props) {
                 >
                   {props.task.postedBy.firstName.charAt(0)}
                 </div>
-                <div className="flex flex-col max-w-30 ml-3 justify-center">
+                <div className="flex flex-col max-w-35 ml-3 justify-center">
                   <div
-                    className="text-sm font-semibold text-[#569aff] cursor-pointer"
+                    className="text-sm font-semibold text-[#569aff] cursor-pointer flex items-center gap-1"
                     onClick={() =>
                       navigate(`/profile/${props.task.postedBy.givenId}`)
                     }
@@ -391,7 +393,7 @@ function TaskPage(props) {
                     props.task.postedBy.lastName
                       ? props.task.postedBy.lastName
                       : ""
-                  } `}</div>
+                  } `} {props.task.postedBy.verified && <VerifiedIcon h={16} w={16} />}</div>
                   <div className="text-[#a1a1a1] text-[0.75rem]">
                     {timeAgo(new Date(props.task.task.createdAt))}
                   </div>
@@ -509,6 +511,7 @@ function TaskPage(props) {
                           }
                         >
                           {props.task.offer.offeredBy}
+                          {props.task.offer.verified && <VerifiedIcon h={16} w={16} />}
                         </div>
                         <div className="text-[#a1a1a1] text-[0.75rem]">
                           {timeAgo(

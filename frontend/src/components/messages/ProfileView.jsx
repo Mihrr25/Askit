@@ -3,9 +3,10 @@ import { ChevronRight } from 'lucide-react';
 import avatar from "../../assets/Avatar.png"
 import { connect } from "react-redux"
 import { useNavigate } from 'react-router-dom';
+import { VerifiedIcon } from '../../assets/Icons';
 
-const ChatListItem = ({ name, message, isOnline,profilePic,unreadMessages,givenId }) => {
-  console.log(isOnline,givenId)
+const ChatListItem = ({ name, message, isOnline,profilePic,unreadMessages,givenId,verified }) => {
+  // console.log(isOnline,givenId)
   const navigate = useNavigate();
   return (
     <div className="flex items-center justify-between w-full p-4 border-b border-[#2f2f2f] hover:bg-gray-800/50 cursor-pointer transition-colors" onClick={() => navigate(`/messages/${givenId}`)}>
@@ -17,8 +18,9 @@ const ChatListItem = ({ name, message, isOnline,profilePic,unreadMessages,givenI
           )}
         </div>
         <div className='max-w-3/4 ml-1'>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1">
             <h3 className="text-white font-medium">{name}</h3>
+            {verified && <VerifiedIcon h={16} w={16} />}
           </div>
           <p className="text-gray-400 text-sm line-clamp-2">{message}</p>
         </div>
@@ -31,128 +33,7 @@ const ChatListItem = ({ name, message, isOnline,profilePic,unreadMessages,givenI
     </div>
   );
 };
-const chats = [
-  {
-    id: 1,
-    name: 'Ashish Gupta',
-    message: 'Hello maam, I am interested in you job, my offer price is 400 rupees and ...',
-    timeAgo: '2 days ago',
-    avatar: '../../assets/Avatar.png',
-    isOnline: true
-  },
-  {
-    id: 2,
-    name: 'Mariya G.',
-    message: 'Hello maam, I am interested in you job, my offer price is 400 rupees and i want to offer you my services, However i do have my terms and condition ',
-    timeAgo: '3 days ago',
-    avatar: '/api/placeholder/80/80',
-    isOnline: true
-  },
-  {
-    id: 3,
-    name: 'Hassan Sheikh',
-    message: 'Hello maam, I am interested in you job, my offer price is 400 rupees and ...',
-    timeAgo: '6 days ago',
-    avatar: '/api/placeholder/80/80',
-    isOnline: false
-  },
-  {
-    id: 4,
-    name: 'Hassan Sheikh',
-    message: 'Hello maam, I am interested in you job, my offer price is 400 rupees and ...',
-    timeAgo: '6 days ago',
-    avatar: '/api/placeholder/80/80',
-    isOnline: false
-  },
-  {
-    id: 5,
-    name: 'Hassan Sheikh',
-    message: 'Hello maam, I am interested in you job, my offer price is 400 rupees and ...',
-    timeAgo: '6 days ago',
-    avatar: '/api/placeholder/80/80',
-    isOnline: false
-  },
-  {
-    id: 6,
-    name: 'Hassan Sheikh',
-    message: 'Hello maam, I am interested in you job, my offer price is 400 rupees and ...',
-    timeAgo: '6 days ago',
-    avatar: '/api/placeholder/80/80',
-    isOnline: false
-  },
-  {
-    id: 7,
-    name: 'Hassan Sheikh',
-    message: 'Hello maam, I am interested in you job, my offer price is 400 rupees and ...',
-    timeAgo: '6 days ago',
-    avatar: '/api/placeholder/80/80',
-    isOnline: false
-  },
-  {
-    id: 7,
-    name: 'Hassan Sheikh',
-    message: 'Hello maam, I am interested in you job, my offer price is 400 rupees and ...',
-    timeAgo: '6 days ago',
-    avatar: '/api/placeholder/80/80',
-    isOnline: false
-  },
-  {
-    id: 7,
-    name: 'Hassan Sheikh',
-    message: 'Hello maam, I am interested in you job, my offer price is 400 rupees and ...',
-    timeAgo: '6 days ago',
-    avatar: '/api/placeholder/80/80',
-    isOnline: false
-  },
-  {
-    id: 7,
-    name: 'Hassan Sheikh',
-    message: 'Hello maam, I am interested in you job, my offer price is 400 rupees and ...',
-    timeAgo: '6 days ago',
-    avatar: '/api/placeholder/80/80',
-    isOnline: false
-  },
-  {
-    id: 7,
-    name: 'Hassan Sheikh',
-    message: 'Hello maam, I am interested in you job, my offer price is 400 rupees and ...',
-    timeAgo: '6 days ago',
-    avatar: '/api/placeholder/80/80',
-    isOnline: false
-  },
-  {
-    id: 7,
-    name: 'Hassan Sheikh',
-    message: 'Hello maam, I am interested in you job, my offer price is 400 rupees and ...',
-    timeAgo: '6 days ago',
-    avatar: '/api/placeholder/80/80',
-    isOnline: false
-  },
-  {
-    id: 7,
-    name: 'Hassan Sheikh',
-    message: 'Hello maam, I am interested in you job, my offer price is 400 rupees and ...',
-    timeAgo: '6 days ago',
-    avatar: '/api/placeholder/80/80',
-    isOnline: false
-  },
-  {
-    id: 7,
-    name: 'Hassan Sheikh',
-    message: 'Hello maam, I am interested in you job, my offer price is 400 rupees and ...',
-    timeAgo: '6 days ago',
-    avatar: '/api/placeholder/80/80',
-    isOnline: false
-  },
-  {
-    id: 7,
-    name: 'Hassan Sheikh',
-    message: 'Hello maam, I am interested in you job, my offer price is 400 rupees and ...',
-    timeAgo: '6 days ago',
-    avatar: '/api/placeholder/80/80',
-    isOnline: false
-  },
-];
+
 
 const ChatList = (props) => {
   console.log(props.userChat.chats)
@@ -170,6 +51,7 @@ const ChatList = (props) => {
       profilePic={chat.userDetails.profilePic}
       unreadMessages={chat.unreadMessages}
       givenId={key}
+      verified={chat.userDetails.verified}
     />
 ))}
     </div>

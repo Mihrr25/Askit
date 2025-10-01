@@ -47,7 +47,7 @@ const EditProfile = (props) => {
         <div className="back-to-main-page flex pt-[0.2rem] w-full relative">
           <div className="absolute h-full flex items-center">
 
-            <button style={{ all: 'unset', cursor: 'pointer' }} className="h-full" type="button" onClick={() => navigate('/')}>
+            <button style={{ all: 'unset', cursor: 'pointer' }} className="h-full" type="button" onClick={() => navigate('/profile/'+props.user.givenId)}>
               <svg width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect width="10" height="16" fill="none " />
                 <g id="App Icons">

@@ -97,6 +97,7 @@ export const getTaskById = async (req, res) => {
                 firstName: poster.firstName,
                 lastName: poster.lastName,
                 profilePic: poster.profilePic,
+                verified: poster.verified?true:false,
             },
 
         }
@@ -113,6 +114,7 @@ export const getTaskById = async (req, res) => {
                     profilePic: offerUser.profilePic,
                     givenId: offerUser.givenId,
                     offerAcceptedDate: offer.updatedAt,
+                    verified: offerUser.verified?true:false,
                 },
             };
         }

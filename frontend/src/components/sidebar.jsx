@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { X, User, Wallet, FileText, Star, HelpCircle, Info, HeadphonesIcon, LogOut } from 'lucide-react';
 import { CloseSquare, MyAccnt, Support, Logout, MyTasks,PostTask,Alerts,Messages } from '../assets/Icons';
 import { logout } from '../actions/authActions';
 import { useDispatch,connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { VerifiedIcon } from '../assets/Icons';
 
 
 const Sidebar = ({ toggleSidebar, isOpen,...props }) => {
@@ -31,7 +31,11 @@ const Sidebar = ({ toggleSidebar, isOpen,...props }) => {
             <span className="text-white">{props.user.firstName.charAt(0).toUpperCase()}</span>
           </div>
           <div className='max-w-35'>
-            <p className="font-semibold">Hi, {props.user.firstName}</p>
+            <p className="font-semibold flex items-center gap-1">Hi, {props.user.firstName.split(' ')[0].length > 10 
+          ? props.user.firstName.split(' ')[0].slice(0, 11) + "…" 
+          : props.user.firstName.split(' ')[0]
+       } 
+  {props.user.verified && <VerifiedIcon h={16} w={16} />}</p>
             <p className="text-xs text-[#777777] mt-1 line-clamp-1">{props.user.email}</p>
           </div>
         </div>

@@ -61,11 +61,12 @@ export const getOffers = async (req, res) => {
             const offers = await Offer.find({ taskId: id });
             let resp=[];
             for(let i=0;i<offers.length;i++){
-                const user=await User.findOne({givenId:offers[i].offerGivenBy})
+                const user=await User.findOne({givenId:offers[i].offerGivenBy}).select("-passeword")
                 resp.push({
                     description:offers[i].description,
                     price:offers[i].price,
                     offeredByName:user.firstName+" "+user.lastName,
+                    verified:user.verified?true:false,
                     offeredBySkills:user.skills,
                     userRating:user.UserRating,
                     userCity:user.city,

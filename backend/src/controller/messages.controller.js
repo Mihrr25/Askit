@@ -11,6 +11,7 @@ import Alerts from "../models/alerts.model.js";
 
 export const getChats = async (req, res) => {
     try {
+        // console.log("\n \n \n \n \n \n \n getChats called");
         let obj = {};
         const chats = await UserChats.findOne({ userChats: req.user.givenId })
         // console.log("chats123", chats)
@@ -26,13 +27,15 @@ export const getChats = async (req, res) => {
         // console.log("chats",obj.chats)
         for (const key in obj.chats.chats) {
             const chat = obj.chats.chats[key];
-            const user = await User.findOne({ givenId: key });
+            const user = await User.findOne({ givenId: key }).select("-password");
+            // console.log("user MIHIR MIHIR ", obj.chats.chats)
             if (user) {
                 obj.chats.chats[key].userDetails = {
                     firstName: user.firstName,
                     lastName: user.lastName,
                     givenId: user.givenId,
                     profilePic: user.profilePic,
+                    verified: user.verified?true:false,
                 };
             }
             let message = await Message.findById(chat.messageId).select("message createdAt")
@@ -45,7 +48,7 @@ export const getChats = async (req, res) => {
                 obj.chats.chats[key].createdAt = new Date();
             }
         }
-        console.log("chats",obj.chats)
+        // console.log("chats",obj.chats)
         res.status(200).json(obj.chats.chats);
     } catch (error) {
         console.log("Error getting chats", error);
@@ -59,7 +62,7 @@ export const getMessages = async (req, res) => {
         if (!friendId || isNaN(friendId)) {
             return res.status(400).json({ message: "Invalid friend ID" });
         }
-        const user = await User.findOne({ givenId: friendId })
+        const user = await User.findOne({ givenId: friendId }).select("-password");
         if (!user) {
             return res.status(400).json({ message: "Invalid User" })
         }
@@ -73,6 +76,7 @@ export const getMessages = async (req, res) => {
                 lastName: user.lastName,
                 givenId: user.givenId,
                 profilePic: user.profilePic,
+                verified: user.verified?true:false,
             }
 
         }

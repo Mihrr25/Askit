@@ -1,5 +1,5 @@
 import React from 'react'
-import { Star,LocationPin } from '../assets/Icons'
+import { Star,LocationPin,VerifiedIcon } from '../assets/Icons'
 import { useDispatch } from 'react-redux'
 import { updateOffer } from '../actions/offerActions'
 import { useNavigate } from 'react-router-dom'
@@ -22,7 +22,7 @@ const OfferComp = ({ offer,taskId }) => {
         <div className="flex min-h-15 ">
           <div className="bg-pink-300 h-full aspect-square rounded-full cursor-pointer flex items-center justify-center text-2xl" onClick={handleClick}>{offer.offeredByName.charAt(0)}</div>
           <div className="flex flex-col justify-evenly ml-2 w-[60%] py-1 cursor-pointer" onClick={handleClick}>
-            <div className="text-lg">{offer.offeredByName}</div>
+            <div className="text-lg flex items-center gap-1">{offer.offeredByName} {offer.verified && <VerifiedIcon h={18} w={18} />}</div>
             <div className="text-lg text-[#777777] line-clamp-1">{offer.offeredBySkills}</div>
           </div>
           <div className="text-lg font-bold text-center flex justify-center ml-auto items-center pb-6">
