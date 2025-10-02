@@ -39,7 +39,9 @@ const Sidebar = ({ toggleSidebar, isOpen,...props }) => {
             <p className="text-xs text-[#777777] mt-1 line-clamp-1">{props.user.email}</p>
           </div>
         </div>
-        <div className="ml-4 h-0.25 w-full bg-[#77777733]"></div>
+        <div className="px-4 w-full">
+        <div className="h-0.25 w-full bg-[#77777733]"></div>
+        </div>
 
         <div className="px-4 py-2">
           <ul>
