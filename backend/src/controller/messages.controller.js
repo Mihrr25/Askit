@@ -36,6 +36,7 @@ export const getChats = async (req, res) => {
                     givenId: user.givenId,
                     profilePic: user.profilePic,
                     verified: user.verified?true:false,
+                    gender:user.gender?user.gender:null,
                 };
             }
             let message = await Message.findById(chat.messageId).select("message createdAt")

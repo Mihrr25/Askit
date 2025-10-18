@@ -5,14 +5,14 @@ import { connect } from "react-redux"
 import { useNavigate } from 'react-router-dom';
 import { VerifiedIcon } from '../../assets/Icons';
 
-const ChatListItem = ({ name, message, isOnline,profilePic,unreadMessages,givenId,verified }) => {
+const ChatListItem = ({ name, message, isOnline,profilePic,unreadMessages,givenId,verified,gender }) => {
   // console.log(isOnline,givenId)
   const navigate = useNavigate();
   return (
     <div className="flex items-center justify-between w-full p-4 border-b border-[#2f2f2f] hover:bg-gray-800/50 cursor-pointer transition-colors" onClick={() => navigate(`/messages/${givenId}`)}>
       <div className="flex items-center gap-3 w-full">
         <div className="relative">
-          <img src={avatar} alt={`${name}'s avatar`} className="w-12 h-12 rounded-full object-cover" />
+          <img src={gender === "male" ? "/app/IconMale.png" : "/app/IconFemale.png"} alt={`${name}'s avatar`} className="w-12 h-12 rounded-full object-cover" />
           {isOnline && (
             <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-black"></div>
           )}
@@ -51,6 +51,7 @@ const ChatList = (props) => {
       profilePic={chat.userDetails.profilePic}
       unreadMessages={chat.unreadMessages}
       givenId={key}
+      gender={chat.userDetails.gender?chat.userDetails.gender:null}
       verified={chat.userDetails.verified}
     />
 ))}
