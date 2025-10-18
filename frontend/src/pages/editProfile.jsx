@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { connect,useDispatch } from 'react-redux';
 import { updateUser } from '../actions/authActions';
@@ -16,11 +16,33 @@ const EditProfile = (props) => {
     skills: props.user.skills ?? "",
     description: props.user.description ?? "",
   })
+  const [colleges, setColleges] = useState([]);
+  const [filteredColleges, setFilteredColleges] = useState([]);
+  const [showDropdown, setShowDropdown] = useState(false);
+
+  useEffect(() => {
+    fetch("/app/colleges.json") // make sure it's in 'public/'
+      .then((res) => res.json())
+      .then((data) => setColleges(data))
+      .catch((err) => console.error("Error loading colleges:", err));
+  }, []);
+
+  useEffect(() => {
+    const query = profile.college.toLowerCase();
+    const matches = colleges.filter((college) =>
+      college.toLowerCase().includes(query)
+    );
+    setFilteredColleges(matches);
+  }, [profile.college, colleges]);
   // console.log(profile);
   const [updating, setUpdating] = useState(false);
   const handleSubmit = async (e) => {
     e.preventDefault();
     // console.log(profile);
+    if(colleges.includes(profile.college)===false){
+      profile.college="";
+      return;
+    }
     setUpdating(true);
     let r1 = await updateUser(profile);
     if (r1) {
@@ -130,25 +152,50 @@ const EditProfile = (props) => {
 
             </div>
           </div>
-          <div className="ques flex flex-col">
+         <div className="ques flex flex-col">
             <div className="flex items-center mt-2 pl-1 mb-1.5 flex-wrap">
               <div className="text-lg">College</div>
             </div>
-            <div className="mb-2">
+
+            <div className="mb-2 relative">
               <input
                 type="text"
                 placeholder="Enter College Name"
                 value={profile.college}
                 onChange={(e) => setProfile({ ...profile, college: e.target.value })}
                 required
+                 onBlur={() => {
+                                setTimeout(() => {
+                    if (!colleges.includes(profile.college)) {
+                      setProfile({ ...profile, college: "" });
+                    }
+                    setShowDropdown(false);
+                  }, 15);
+                              
+              }}
                 className="w-full bg-[#222225] text-white p-3 rounded-xl h-11 text-sm leading-tight placeholder-[#777777]"
+                onFocus={() => setShowDropdown(true)}
               />
 
-
-
-
+              {showDropdown && filteredColleges.length > 0 && (
+                <ul className="absolute z-50 bg-[#2b2b2f] w-full mt-1 rounded-lg max-h-48 overflow-y-auto border border-[#333]">
+                  {filteredColleges.slice(0, 10).map((college, index) => (
+                    <li
+                      key={index}
+                      onMouseDown={() => {
+                        setProfile({ ...profile, college });
+                        setShowDropdown(false);
+                      }}
+                      className="px-3 py-2 text-sm hover:bg-[#3a3a3f] cursor-pointer"
+                    >
+                      {college}
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
           </div>
+
           <div className="ques flex flex-col">
             <div className="flex items-center justify-between mt-2 pl-1 mb-1.5 flex-wrap ">
               <div className="text-lg">Skills</div>
