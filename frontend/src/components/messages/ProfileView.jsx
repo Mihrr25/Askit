@@ -51,7 +51,7 @@ const ChatList = (props) => {
       profilePic={chat.userDetails.profilePic}
       unreadMessages={chat.unreadMessages}
       givenId={key}
-      gender={chat.userDetails.gender?chat.userDetails.gender:null}
+      gender={chat.userDetails.gender?chat.userDetails.gender:'male'}
       verified={chat.userDetails.verified}
     />
 ))}
