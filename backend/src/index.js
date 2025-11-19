@@ -1,18 +1,20 @@
 import express from "express"
-import dotenv from "dotenv"
+import path from "path";
+import { fileURLToPath } from "url";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+import dotenv from "dotenv";
+dotenv.config({ path: path.join(__dirname, "../../.env") });
 import cookieParser from "cookie-parser"
 import authRoutes from "./routes/auth.routes.js"
 import taskRoutes from "./routes/task.routes.js"
 import offerRoutes from "./routes/offer.routes.js"
 import messageRoutes from "./routes/message.route.js"
-// import messageRoutes from "./routes/message.routes.js"
 import {connectDB} from "./lib/db.js"
 import { connectRedis } from "./lib/redis.js"
 import {io,app,server} from "./lib/socket.js"
 import cors from "cors"
 // import { saveCSVData } from "./controller/temp.controller.js"
-
-dotenv.config()
 
 
 app.use(express.json({ limit: '10mb' }));
@@ -28,11 +30,7 @@ app.use("/api/task",taskRoutes)
 app.use("/api/offer",offerRoutes)
 app.use("/api/messages",messageRoutes)
 
-import path from "path";
-import { fileURLToPath } from "url";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 // Serve frontend build static files
 app.use("/app/", express.static(path.join(__dirname, "../../frontend/dist")));
@@ -53,7 +51,7 @@ app.get("*", (req, res) => {
 
 
 
-server.listen(process.env.PORT,()=>{
+server.listen(process.env.PORT,"0.0.0.0",()=>{
     console.log("server started")
     connectDB();
     connectRedis();
