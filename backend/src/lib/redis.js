@@ -1,14 +1,20 @@
-import { createClient } from "redis";
-const redisClient = createClient({
-  url: process.env.REDIS_URL,
-});
-
-redisClient.on("error", (err) => console.error("Redis Error:", err));
+import pkg from "ioredis";
+const { createClient } = pkg;
+let client ;
+// client.on("error", (err) => console.error("Redis Error:", err,process.env.REDIS_URL));
 
 export const connectRedis = async () => {
   try {
-    if (!redisClient.isOpen) {  // Prevents multiple connections
-      await redisClient.connect();
+    client = createClient({
+      username: process.env.REDIS_USER,
+      password: process.env.REDIS_PASS,
+      host: 'redis-14718.c301.ap-south-1-1.ec2.cloud.redislabs.com',
+      port: 14718
+      
+    });
+    client.on("error", (err) => console.error("Redis Error:", err));
+    if (!client.isOpen) {  // Prevents multiple connections
+      await client.connect();
       console.log("\u{2705} Connected to Redis Cloud");
     }
   } catch (err) {
@@ -16,4 +22,4 @@ export const connectRedis = async () => {
   }
 };
 
-export default redisClient;
+export default client;
