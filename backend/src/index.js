@@ -14,6 +14,7 @@ import {connectDB} from "./lib/db.js"
 import { connectRedis } from "./lib/redis.js"
 import {io,app,server} from "./lib/socket.js"
 import cors from "cors"
+import { initializeMailer } from "./lib/mail.js";
 // import { saveCSVData } from "./controller/temp.controller.js"
 
 
@@ -55,6 +56,7 @@ server.listen(process.env.PORT,"0.0.0.0",()=>{
     console.log("server started")
     connectDB();
     connectRedis();
+    initializeMailer();
     // saveCSVData();
 
 })

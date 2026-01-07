@@ -117,7 +117,7 @@ const Footer = () => {
           {/* Bottom Section */}
           <div className="border-t border-border mt-12 pt-8 text-center">
             <p className="text-muted-foreground">
-              © 2025 Askit India. All rights reserved.
+              © 2026 Askit India. All rights reserved.
             </p>
           </div>
         </div>
