@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs"
 import { generateToken,generaterandomString } from "../lib/utils.js"
 import { oauth2Client } from "../lib/Oauth.js"
 import axios from "axios";
-import redisClient from "../lib/redis.js"
+import {getRedisClient} from "../lib/redis.js"
 import { sendForgotPasswordEmail } from "../lib/mail.js"
 
 // import cloudinary from "../lib/cloudinary.js"
@@ -194,6 +194,7 @@ export const googleAuth = async (req, res) => {
 }
 
 export const forgetPassword = async (req, res) => {
+    let redisClient=getRedisClient();
     const { email } = req.body;
     try {
         const user = await User.findOne({ email });
@@ -214,6 +215,7 @@ export const forgetPassword = async (req, res) => {
 }
 export const checkToken = async (req, res) => {
     const { token } = req.body;
+    let redisClient=getRedisClient();
     try {
         const emailId = await redisClient.get(token);
         if (!emailId) {
@@ -227,6 +229,7 @@ export const checkToken = async (req, res) => {
     }
 }
 export const resetPassword = async (req, res) => {
+    let redisClient=getRedisClient();
     const { token, newPassword } = req.body;
     try {
         const emailId= await redisClient.get(token);
