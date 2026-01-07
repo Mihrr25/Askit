@@ -8,8 +8,8 @@ export const connectRedis = async () => {
     client = createClient({
       username: process.env.REDIS_USER,
       password: process.env.REDIS_PASS,
-      host: 'redis-14718.c301.ap-south-1-1.ec2.cloud.redislabs.com',
-      port: 14718
+      host: process.env.REDIS_HOST,
+      port: parseInt(process.env.REDIS_PORT, 10)
       
     });
     client.on("error", (err) => console.error("Redis Error:", err));
