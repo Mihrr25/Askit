@@ -4,23 +4,23 @@ import { IndianRupee, Users, Smartphone, Clock } from 'lucide-react';
 const features = [
   {
     icon: IndianRupee,
-    title: "Earn While You Learn",
-    description: "Use your skills to make money with flexible hours that fit your schedule"
+    title: "Earn Money as a Student",
+    description: "Use your skills for freelancing and part-time work with flexible hours that fit your college schedule"
   },
   {
     icon: Users,
-    title: "Trusted Campus Community",
-    description: "Verified students only, in your region. Build connections that last"
+    title: "Trusted Student Community",
+    description: "Verified college students only, in your region. Safe peer-to-peer platform for freelancers"
   },
   {
     icon: Smartphone,
-    title: "Fast, Simple & Mobile-first",
-    description: "No resumes. No formalities. Just value exchange made simple"
+    title: "Fast Mobile Task Posting",
+    description: "No resumes needed. Simple task posting app for students to earn or hire freelancers"
   },
   {
     icon: Clock,
-    title: "Use Your Time Better",
-    description: "Outsource small tasks or offer help in your free hours"
+    title: "Flexible Freelancing Hours",
+    description: "Post tasks or offer services in your free time. Perfect for student schedules"
   }
 ];
 
@@ -57,10 +57,10 @@ const WhyAskit = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold font-poppins mb-6">
-            Why Choose <span className="text-primary">Askit?</span>
+            Why Choose <span className="text-primary">Askit India?</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Built specifically for students, by students. Experience the future of campus collaboration.
+            India's premier student freelance platform built for college students. Experience the future of peer-to-peer collaboration and earning opportunities.
           </p>
         </div>
 

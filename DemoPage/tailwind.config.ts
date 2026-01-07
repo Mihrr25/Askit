@@ -150,7 +150,7 @@ export default {
 				'fade-in-up': 'fade-in-up 0.8s ease-out',
 				'fade-in': 'fade-in 0.6s ease-out',
 				'slide-in-left': 'slide-in-left 0.8s ease-out',
-				'glow-pulse': 'glow-pulse 2s ease-in-out infinite',
+				'glow-pulse': 'glow-pulse 3.5s ease-in-out infinite',
 				'text-reveal': 'text-reveal 0.8s ease-out'
 			}
 		}

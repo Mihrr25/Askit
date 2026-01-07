@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import ThemeToggle from '@/components/ThemeToggle';
 
 const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -50,10 +51,16 @@ const Navigation = () => {
               Home
             </Link>
             <Link 
+              to="/msme-services"
+              className="text-foreground hover:text-primary transition-colors duration-300"
+            >
+              MSME Services
+            </Link>
+            <Link 
               to="/beta-access"
               className="text-foreground hover:text-primary transition-colors duration-300"
             >
-              Beta Access
+              Get Access
             </Link>
             <button 
               onClick={() => scrollToSection('contact')}
@@ -61,6 +68,7 @@ const Navigation = () => {
             >
               Contact
             </button>
+            <ThemeToggle />
           </div>
         </div>
       </div>

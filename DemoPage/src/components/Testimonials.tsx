@@ -1,5 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
-import { Quote } from 'lucide-react';
+import { Quote, Send } from 'lucide-react';
+import { Button } from './ui/button';
+import { Input } from './ui/input';
+import { Textarea } from './ui/textarea';
+import { Label } from './ui/label';
+import { useToast } from '@/hooks/use-toast';
 
 const testimonials = [
   {
@@ -27,6 +32,14 @@ const testimonials = [
 const Testimonials = () => {
   const [visibleTestimonials, setVisibleTestimonials] = useState<number[]>([]);
   const testimonialRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const { toast } = useToast();
+  
+  const [reviewForm, setReviewForm] = useState({
+    name: '',
+    college: '',
+    review: '',
+    category: ''
+  });
 
   useEffect(() => {
     const observerOptions = {
@@ -51,6 +64,31 @@ const Testimonials = () => {
 
     return () => observer.disconnect();
   }, [visibleTestimonials]);
+
+  const handleSubmitReview = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!reviewForm.name || !reviewForm.review) {
+      toast({
+        title: "Missing Information",
+        description: "Please fill in your name and review.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    toast({
+      title: "Thank you for your review!",
+      description: "We appreciate your feedback and will feature it soon.",
+    });
+
+    setReviewForm({
+      name: '',
+      college: '',
+      review: '',
+      category: ''
+    });
+  };
 
   return (
     <section className="py-20 bg-dark-surface">
@@ -101,6 +139,76 @@ const Testimonials = () => {
                 </div>
               );
             })}
+          </div>
+        </div>
+
+        {/* Drop a Review Section */}
+        <div className="max-w-2xl mx-auto mt-20">
+          <div className="text-center mb-10">
+            <h3 className="text-3xl md:text-4xl font-bold font-poppins mb-4">
+              Share Your <span className="text-primary">Experience</span>
+            </h3>
+            <p className="text-muted-foreground">
+              Help other students by sharing your Askit story
+            </p>
+          </div>
+
+          <div className="bg-card border border-border rounded-2xl p-8">
+            <form onSubmit={handleSubmitReview} className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label htmlFor="name">Your Name *</Label>
+                  <Input
+                    id="name"
+                    placeholder="e.g., Priya Sharma"
+                    value={reviewForm.name}
+                    onChange={(e) => setReviewForm({ ...reviewForm, name: e.target.value })}
+                    required
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="college">College/University</Label>
+                  <Input
+                    id="college"
+                    placeholder="e.g., Delhi University"
+                    value={reviewForm.college}
+                    onChange={(e) => setReviewForm({ ...reviewForm, college: e.target.value })}
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="category">Category (Optional)</Label>
+                <Input
+                  id="category"
+                  placeholder="e.g., Video Editing, Academic Help, etc."
+                  value={reviewForm.category}
+                  onChange={(e) => setReviewForm({ ...reviewForm, category: e.target.value })}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="review">Your Review *</Label>
+                <Textarea
+                  id="review"
+                  placeholder="Share your experience with Askit..."
+                  value={reviewForm.review}
+                  onChange={(e) => setReviewForm({ ...reviewForm, review: e.target.value })}
+                  required
+                  className="min-h-[120px] resize-none"
+                />
+              </div>
+
+              <Button 
+                type="submit" 
+                className="w-full group"
+                size="lg"
+              >
+                <Send className="w-4 h-4 mr-2 group-hover:translate-x-1 transition-transform" />
+                Submit Review
+              </Button>
+            </form>
           </div>
         </div>
       </div>

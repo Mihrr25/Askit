@@ -20,8 +20,7 @@ const Footer = () => {
                 <span className="text-primary"> India</span>
               </div>
               <p className="text-muted-foreground mb-6 max-w-md">
-                The peer-to-peer service marketplace designed exclusively for college students. 
-                Your skills. Your campus. Your earnings.
+                India's student freelance platform connecting college students for part-time work, freelancing opportunities, and task completion. Your skills. Your campus. Your earnings.
               </p>
               
               {/* Social Links */}

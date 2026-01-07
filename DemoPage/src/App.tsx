@@ -6,10 +6,12 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import About from "./pages/About";
 import BetaAccess from "./pages/BetaAccess";
+import MSMEServices from "./pages/MSMEServices";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfUse from "./pages/TermsOfUse";
 import Safety from "./pages/Safety";
 import NotFound from "./pages/NotFound";
+import ChatbotButton from "./components/ChatbotButton";
 
 const queryClient = new QueryClient();
 
@@ -19,10 +21,12 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <ChatbotButton />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/about" element={<About />} />
           <Route path="/beta-access" element={<BetaAccess />} />
+          <Route path="/msme-services" element={<MSMEServices />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-use" element={<TermsOfUse />} />
           <Route path="/safety" element={<Safety />} />

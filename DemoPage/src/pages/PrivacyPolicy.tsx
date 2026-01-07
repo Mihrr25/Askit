@@ -16,14 +16,13 @@ const PrivacyPolicy = () => {
               
               <div className="bg-card border border-border rounded-xl p-8 mb-8">
                 <p className="text-muted-foreground mb-8">
-                  <strong>Effective Date:</strong> 25th July, 2025
+                  <strong>Effective Date:</strong> 25th August, 2025
                 </p>
 
                 <div className="prose prose-lg max-w-none">
                   <h2 className="text-2xl font-bold font-poppins mb-4 text-foreground">1. Introduction</h2>
                   <p className="text-muted-foreground mb-6">
-                    At Askit, we value your privacy. This Privacy Policy outlines how we collect, use, and protect your personal data while you use our MVP platform hosted on{" "}
-                    <a href="https://askit-1.onrender.com/app/" className="text-primary hover:underline">https://askit-1.onrender.com/app/</a>.
+                    At Askit, we value your privacy. This Privacy Policy outlines how we collect, use, and protect your personal data while you use our MVP platform hosted on this website.
                   </p>
 
                   <h2 className="text-2xl font-bold font-poppins mb-4 text-foreground">2. Information We Collect</h2>

@@ -3,38 +3,38 @@ import { BookOpen, Briefcase, GraduationCap, Computer, Video, Camera, Palette, F
 const categories = [
   {
     icon: BookOpen,
-    title: "Homework and Assignments",
-    description: "Research, writing, academic projects"
+    title: "Assignment Writing Help",
+    description: "Research, writing, academic projects, homework help"
   },
   {
     icon: Briefcase,
-    title: "Office Work",
-    description: "Data entry, documentation, admin tasks"
+    title: "Office & Admin Work",
+    description: "Data entry, documentation, admin tasks for businesses"
   },
   {
     icon: GraduationCap,
-    title: "Tutoring",
+    title: "Tutoring Services",
     description: "Subject teaching, exam prep, study sessions"
   },
   {
     icon: Computer,
-    title: "Computer IT",
-    description: "Tech support, coding, web development"
+    title: "Computer IT & Web Design",
+    description: "Tech support, coding, website design, development"
   },
   {
     icon: Video,
-    title: "Video Editing",
-    description: "Content creation, post-production, effects"
+    title: "Video Editing Services",
+    description: "Content creation, post-production, social media videos"
   },
   {
     icon: Camera,
-    title: "Photography-Filmmaking",
+    title: "Photography & Filmmaking",
     description: "Photo shoots, event coverage, film projects"
   },
   {
     icon: Palette,
-    title: "Design",
-    description: "Graphics, logos, UI/UX, creative work"
+    title: "Design Services",
+    description: "Logo design, graphics, poster design, UI/UX work"
   },
   {
     icon: Dumbbell,
@@ -74,10 +74,10 @@ const Categories = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold font-poppins mb-6">
-            Explore Categories Tailored to <span className="text-primary">Student Life</span>
+            Explore Service Categories for <span className="text-primary">Student Freelancers</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Multiple categories to choose from, crafted for your needs.
+            From design help and content writing to tutoring and tech support - discover freelancing opportunities tailored to college student skills.
           </p>
         </div>
 
